@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Solving reload flicker on Raspberry Pi Chromium.</title>
+		<link href="./stylesheets/teostyle.css" rel="stylesheet" type="text/css" media="all">
+
+		<style>
+			body {
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 90px;
+				margin-bottom: 50px;
+				width: 700px;
+				font-family: 'iA Writer Quattro S', serif !important;
+				font-size: 16px;
+				line-height: 1.4;
+			} 
+
+			.right {
+				text-align: right;
+				float: right;	
+			}
+
+		</style>
+	</head>
+
+	<body>
+	<b>Solving reload flicker on Raspberry Pi Chromium.</b><div class="right">19/11/2021</div>
+	<hr>
+	<p>
+	<p>Recently i had occasion to create a minimal interactive kiosk device using a Raspberry Pi and the official 7" touch display.</p>
+	<p>The way i satisfied my requirements was to boot a minimal Raspbian directly into full-screen Chromium displaying a specific web-page.
+	Since the kiosk would be displaying timely information i needed it to update at regular and frequent intervals. </p>
+	<p>The simplest way to achieve this is using the <pre>&lt;meta http-equiv="Refresh" content="10"&gt;</pre> tag for a refresh every ten seconds.</p>
+	<p>To make the display less jarring in a dark environment i implemented a little Javascript to change the foreground and background colours at certain times of the day.</p>
+	<p>This, however, caused an unanticipated problem: sometimes the reload would happen slowly enough that there would be a perceptible and annoying flicker of white screen before the background was changed to dark.</p>
+	<p>After a few failed attempts i settled on this most simple solution: change the style tag to <pre>&lt;style="display:none"&gt;</pre><br>
+	I hope this is useful to anyone else in a similar situation.</p>
+
+	</p>
+	</body>
+</html>
