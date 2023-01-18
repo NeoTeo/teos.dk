@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Hand Drawn</title>
+		<link href="./stylesheets/teostyle.css" rel="stylesheet" type="text/css" media="all">
+
+		<style>
+			body {
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 90px;
+				margin-bottom: 50px;
+				width: 700px;
+				font-family: 'iA Writer Quattro S', serif !important;
+				font-size: 16px;
+				line-height: 1.4;
+			} 
+
+			.comment {
+				color: LightGray;
+				font-style: italic;
+				font-size: smaller;
+			}
+
+			.right {
+				text-align: right;
+				float: right;	
+			}
+
+			.left{ float:left; }
+
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			.imgbox {
+				display: grid;
+				height: 100%;
+			}
+
+			.center-fit {
+				max-width: 100%;
+				max-height: 100vh;
+				margin: auto;
+			}
+
+		</style>
+	</head>
+
+	<body>
+	<p>
+	<h1>Hand Drawn</h1>
+	<i>Drawings of hands by a learner</i>
+	</p>
+	<br><br>
+	<p>
+		I was once told, a long time ago, and have heard it many times since, that the hardest thing to draw is the human hand. So the thinking is, if I get good at the hardest thing the rest should be easy, right? We shall see.</p><br>
+	<p>
+		The drawings are made in one sitting, looking at a reference either on screen or paper in front of me.
+	</p><br>
+	<p>
+		I post a drawing regardless of whether I think it came out well or not and occasionally I might include a comment about the drawing, the process, etc.
+	</p><br>
+	<p>
+		Feel free to guess the owner of the hand(s). Often they are known/famous people and are almost always, in one way or another, a hero of mine.
+	</p>
+
+
+	<br><br>
+	<b id="image-title"></b><div class="right" id="image-date"></div>
+	<br>
+	<div class="imgbox">
+		<img id="image" class="center-fit" src="images/handdrawn/hd2.jpg" />
+	</div>
+	<br> <br>
+	<hr>
+
+	<button id="prev-btn">Previous</button>
+	<button id="next-btn">Next</button>
+
+	<script>
+		const imagePath = 'images/handdrawn/';
+		const images = [ 
+			{
+				src: 'hd1.jpg', 
+				title: 'my own hand',
+				date: 'march 24, 2019'
+			},
+			{
+				src: 'hd2.jpg', 
+				title: 'Zane Lowe',
+				date: 'march 25, 2019'
+			},
+			{
+				src: 'hd3.jpg', 
+				title: 'Hayao Miyazaki',
+				date: 'march 26, 2019'
+			}];
+
+		const imageElement = document.getElementById('image');
+		const titleElement = document.getElementById('image-title');
+		const dateElement = document.getElementById('image-date');
+
+		const prevButton = document.getElementById('prev-btn');
+		const nextButton = document.getElementById('next-btn');
+		let currentImageIndex = 0;
+
+		prevButton.addEventListener('click', () => {
+			currentImageIndex--;
+			if(currentImageIndex < 0 ) currentImageIndex = images.length - 1;
+			imageElement.src = imagePath + images[currentImageIndex].src;
+			titleElement.textContent = images[currentImageIndex].title;
+			dateElement.textContent = images[currentImageIndex].date;
+		});
+
+		nextButton.addEventListener('click', () => {
+			currentImageIndex++;
+			if(currentImageIndex > images.length - 1) currentImageIndex = 0;
+			imageElement.src = imagePath + images[currentImageIndex].src;
+			titleElement.textContent = images[currentImageIndex].title;
+			dateElement.textContent = images[currentImageIndex].date;
+		});
+
+
+	</script>
+	</body>
+</html>
