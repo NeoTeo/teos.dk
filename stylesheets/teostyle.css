@@ -141,3 +141,7 @@
     font-display: swap;
 }
 
+.no-underline {
+  text-decoration: none;
+  color: inherit;
+}
