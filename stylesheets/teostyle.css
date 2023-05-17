@@ -68,10 +68,6 @@
   font-display: swap;
 }
 
-
-
-
-
 @font-face {
     font-family: "et-book-roman-old-style";
 
@@ -151,3 +147,10 @@
   color: inherit;
 }
 
+ul.custom-list {
+    width: 50%; /* This makes the list width smaller than the rest of the text */
+    margin: 0 auto; /* This centers the list */
+    list-style-type: disc; /* This sets the list style */
+    font-family: 'Courier New', monospace; /* This sets a different text style for the list */
+    font-size: 14px; /* This sets a different font size for the list */
+}
