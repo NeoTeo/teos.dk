@@ -148,7 +148,7 @@
 }
 
 ul.custom-list {
-    width: 60%; /* This makes the list width smaller than the rest of the text */
+    width: 80%; /* This makes the list width smaller than the rest of the text */
     margin: 0 auto; /* This centers the list */
     list-style-type: disc; /* This sets the list style */
     font-family: 'iA Writer Quattro S', monospace; /* This sets a different text style for the list */
