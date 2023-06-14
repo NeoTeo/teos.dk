@@ -4,4 +4,9 @@
   font-style: normal;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "Eurostile Extended Bold";
+  src: url("eurostile/Eurostile Extended bold.ttf");
+  font-style: normal;
+  font-display: swap;
+}
