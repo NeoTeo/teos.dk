@@ -1,3 +1,4 @@
 p1.jpg:merry mermaid
-p2.jpg:Man on horse
-p3.jpg:Closure
+p2.jpg:man on horse
+p3.jpg:closure
+p4.jpg:portraits
