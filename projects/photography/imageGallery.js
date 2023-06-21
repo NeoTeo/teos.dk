@@ -66,8 +66,8 @@ fetch(document.currentScript.getAttribute('data-filename'))
 
 						let fullscreenImg = this.cloneNode(true);
 						fullscreenImg.style = `
-							max-width: 80%;
-							max-height: 80%;
+							max-width: 95%;
+							max-height: 95%;
 							object-fit: contain;
 							margin: auto;
 						`;

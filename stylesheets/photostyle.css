@@ -10,3 +10,28 @@
   font-style: normal;
   font-display: swap;
 }
+
+.image-container {
+	margin: 20px;
+	margin-bottom: 30px;
+}
+.image-container div {
+	font-family: 'Eurostile LT Std Extended 2', serif;
+	font-size: 14px;
+}
+h1 {
+	padding-top: 90px;
+	font-family: 'Eurostile Extended Bold', serif;
+}
+.image-container img {
+	max-width: 100%;
+	max-height: 100vh; /* Limit the height to the height of the viewport */
+	object-fit: contain; /* Ensures the aspect ratio of the image is preserved */
+}
+.fullscreen {
+	position: static;
+	width: 80%;
+	height: 80%;
+	object-fit: contain;
+}
+
