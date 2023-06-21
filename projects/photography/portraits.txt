@@ -1,2 +1,0 @@
-p1.jpg:A first attempt
-p2.jpg:This is better
