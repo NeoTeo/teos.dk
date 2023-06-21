@@ -5,8 +5,8 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "Eurostile Extended Bold";
-  src: url("eurostile/Eurostile Extended bold.ttf");
+  font-family: "EurostileLTStd-BoldEx2";
+  src: url("eurostile/EurostileLTStd-BoldEx2.otf");
   font-style: normal;
   font-display: swap;
 }
@@ -21,7 +21,7 @@
 }
 h1 {
 	padding-top: 90px;
-	font-family: 'Eurostile Extended Bold', serif;
+	font-family: 'EurostileLTStd-BoldEx2', serif;
 }
 .image-container img {
 	max-width: 100%;
