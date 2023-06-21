@@ -84,6 +84,7 @@ fetch(document.currentScript.getAttribute('data-filename'))
 
 				const captionDiv = document.createElement('div');
 				captionDiv.textContent = caption;
+				captionDiv.className = 'image-caption';
 
 				imageContainer.appendChild(img);
 				imageContainer.appendChild(captionDiv);
