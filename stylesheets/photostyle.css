@@ -10,14 +10,30 @@
   font-style: normal;
   font-display: swap;
 }
+#gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 .image-container {
-	margin: 20px;
-	margin-bottom: 30px;
+  margin: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+//.image-container {
+//	margin: 20px;
+//	margin-bottom: 30px;
+//}
 .image-container div {
 	font-family: 'Eurostile LT Std Extended 2', serif;
 	font-size: 14px;
+margin-top: 20px;
 }
 h1 {
 	padding-top: 90px;
