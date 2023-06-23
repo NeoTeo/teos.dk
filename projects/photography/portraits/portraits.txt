@@ -2,3 +2,5 @@ p1.jpg:merry mermaid
 p2.jpg:man on horse
 p3.jpg:closure
 p4.jpg:portraits
+p5.jpg:untitled
+p6.jpg:at the fair
