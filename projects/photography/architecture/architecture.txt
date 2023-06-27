@@ -3,4 +3,4 @@ a2.jpg:pink cadillac
 a3.jpg:diminishing returns
 a4.jpg:motive
 a5.jpg:symmetry
-a6.jpg:sera
+a6.jpg:che sera
