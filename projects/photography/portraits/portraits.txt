@@ -1,6 +1,8 @@
-p1.jpg:merry mermaid
+challenging.jpg:challenging
 p2.jpg:man on horse
 p3.jpg:closure
 p4.jpg:portraits
 p5.jpg:untitled
+tiredtourist.jpg:tired tourist
 p6.jpg:at the fair
+p1.jpg:merry mermaid
