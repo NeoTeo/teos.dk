@@ -3,6 +3,7 @@ p2.jpg:man on horse
 p3.jpg:closure
 p4.jpg:portraits
 p5.jpg:untitled
+trouble.jpg:trouble
 tiredtourist.jpg:tired tourist
 p6.jpg:at the fair
 p1.jpg:merry mermaid
