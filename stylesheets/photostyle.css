@@ -53,3 +53,12 @@ h1 {
 	object-fit: contain;
 }
 
+.no-underline {
+  text-decoration: none;
+  -webkit-text-decoration: none;
+  color: inherit;
+}
+
+.no-underline:visited {
+  color: inherit;
+}
