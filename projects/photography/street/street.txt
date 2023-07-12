@@ -5,3 +5,4 @@ s4.jpg:the coal market
 s5.jpg:red vs blue
 s6.jpg:kindred spirits
 kickabout.jpg:kickabout
+redandpurple.jpg:red and purple
