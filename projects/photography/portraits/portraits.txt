@@ -3,6 +3,7 @@ p2.jpg:man on horse
 p3.jpg:closure
 p4.jpg:portraits
 p5.jpg:untitled
+quietbreak.jpg:quiet break
 trouble.jpg:trouble
 tiredtourist.jpg:tired tourist
 p6.jpg:at the fair
