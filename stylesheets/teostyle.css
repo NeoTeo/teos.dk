@@ -9,8 +9,7 @@
       format("woff"),
     url("iAWriter/iAWriterQuattroS-Regular.ttf")
       format("truetype"),
-    url("iAWriter/iAWriterQuattroS-Regular.svg#iAWriterQuattroS-Regular")
-      format("svg");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -26,8 +25,7 @@
       format("woff"),
     url("iAWriter/iAWriterQuattroS-Italic.ttf")
       format("truetype"),
-    url("iAWriter/iAWriterQuattroS-Italic.svg#iAWriterQuattroS-Italic")
-      format("svg");
+  font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
@@ -43,8 +41,6 @@
       format("woff"),
     url("iAWriter/iAWriterQuattroS-Bold.ttf")
       format("truetype"),
-    url("iAWriter/iAWriterQuattroS-Bold.svg#iAWriterQuattroS-Bold")
-      format("svg");
   font-style: normal;
   font-weight: bold;
   font-display: swap;
@@ -61,8 +57,6 @@
       format("woff"),
     url("iAWriter/iAWriterQuattroS-BoldItalic.ttf")
       format("truetype"),
-    url("iAWriter/iAWriterQuattroS-BoldItalic.svg#iAWriterQuattroS-BoldItalic")
-      format("svg");
   font-style: italic;
   font-weight: bold;
   font-display: swap;
@@ -81,9 +75,6 @@
 
  	url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") 
 		format("truetype"), 
-
-	url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") 
-		format("svg");
 
     font-weight: normal;
     font-style: normal;
