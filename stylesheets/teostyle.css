@@ -147,3 +147,8 @@ ul.custom-list {
     font-weight: normal;
     font-style: italic;
 }
+.entry-date {
+  color: lightgrey;
+  font-family: monospace;
+}
+
