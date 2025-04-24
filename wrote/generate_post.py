@@ -77,6 +77,45 @@ def update_index(index_path, link_href, link_text, date):
     with open(index_path, 'w', encoding='utf-8') as f:
         f.writelines(out)
 
+
+
+def update_recently_wrote(main_index_path, link_href, link_text, date):
+    with open(main_index_path, encoding='utf-8') as f:
+        content = f.read()
+
+    new_block = (
+        '<p>\n'
+        f'    <span class="entry-date">{date}</span> '
+        f'<a href="wrote/{link_href}">{link_text}</a><br>\n'
+        '</p><br>\n'
+    )
+
+    # match the anchor plus its following <p>…</p><br>, capturing the anchor in group 1
+    pattern = re.compile(
+        r'(<a class="no-underline" href="wrote/wroteindex\.html">'
+        r'<b>Recently wrote\s*(?:&gt;|>)</b></a><br>\s*)'
+        r'<p>.*?</p><br>',
+        re.DOTALL
+    )
+
+    # replace just the <p>…</p><br> with our new block
+    new_content, count = pattern.subn(r'\1' + new_block, content)
+
+    # allow either literal ">" or "&gt;" after "Recently wrote"
+   # pattern = re.compile(
+   #     r'<a class="no-underline" href="wrote/wroteindex\.html">'
+   #     r'<b>Recently wrote\s*(?:&gt;|>)</b></a><br>\s*<p>.*?</p><br>',
+   #     re.DOTALL
+   # )
+
+    #new_content, count = pattern.subn(new_block, content)
+
+    if count == 0:
+        sys.exit("Could not find Recently wrote block in main index to replace.")
+
+    with open(main_index_path, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python generate_post.py path/to/post.md")
@@ -94,6 +133,10 @@ def main():
     # update index, passing in the post's date
     index_path = 'wroteindex.html'
     update_index(index_path, html_fname, title, date)
+
+    # also update the top‐level index.html (one directory up)
+    main_index = os.path.join(os.path.dirname(__file__), '..', 'index.html')
+    update_recently_wrote(main_index, html_fname, title, date)
 
     print(f"→ Generated {html_fname} and updated {index_path}")
 
