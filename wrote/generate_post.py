@@ -42,6 +42,12 @@ def render_html(title, date, body_html):
     <b>{title}</b><div class="right">{date}</div>
     <hr>
     {body_html}
+
+    <div class="footer">
+        <a href="/index.html" class="home-button">
+            <img src="/home.png" alt="Home" />
+        </a>
+    </div>
     </body>
 
 </html>
