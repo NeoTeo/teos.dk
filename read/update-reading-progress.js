@@ -31,10 +31,24 @@ function parseMdLine(line) {
     result.push(current.trim());
   }
   
+  // Parse the NofN format for progress
+  const progressStr = result[2];
+  const progressMatch = progressStr.match(/(\d+)of(\d+)/);
+  
+  let progress = 1; // Default to 1 if parsing fails
+  if (progressMatch) {
+    const currentPage = parseInt(progressMatch[1]);
+    const totalPages = parseInt(progressMatch[2]);
+    const percentage = (currentPage / totalPages) * 100;
+    
+    // Convert percentage to 1-10 scale (0-10% = 1, 11-20% = 2, etc.)
+    progress = Math.min(10, Math.max(1, Math.ceil(percentage / 10)));
+  }
+  
   return {
     author: result[0],
     title: result[1],
-    progress: parseInt(result[2])
+    progress: progress
   };
 }
 
