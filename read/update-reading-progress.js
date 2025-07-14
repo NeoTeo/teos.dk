@@ -36,19 +36,30 @@ function parseMdLine(line) {
   const progressMatch = progressStr.match(/(\d+)of(\d+)/);
   
   let progress = 1; // Default to 1 if parsing fails
+  let isCompleted = false;
+  let currentPage = 0;
+  let totalPages = 0;
+  
   if (progressMatch) {
-    const currentPage = parseInt(progressMatch[1]);
-    const totalPages = parseInt(progressMatch[2]);
-    const percentage = (currentPage / totalPages) * 100;
+    currentPage = parseInt(progressMatch[1]);
+    totalPages = parseInt(progressMatch[2]);
+    isCompleted = currentPage >= totalPages;
     
-    // Convert percentage to 1-10 scale (0-10% = 1, 11-20% = 2, etc.)
-    progress = Math.min(10, Math.max(1, Math.ceil(percentage / 10)));
+    if (!isCompleted) {
+      const percentage = (currentPage / totalPages) * 100;
+      // Convert percentage to 1-10 scale (0-10% = 1, 11-20% = 2, etc.)
+      progress = Math.min(10, Math.max(1, Math.ceil(percentage / 10)));
+    }
   }
   
   return {
     author: result[0],
     title: result[1],
-    progress: progress
+    progress: progress,
+    isCompleted: isCompleted,
+    currentPage: currentPage,
+    totalPages: totalPages,
+    progressStr: progressStr
   };
 }
 
@@ -115,6 +126,7 @@ function extractExistingEntries(html) {
 function determineChanges(mdEntries, existingEntries) {
   const entriesToAdd = [];
   const entriesToUpdate = [];
+  const completedEntries = [];
   
   mdEntries.forEach(mdEntry => {
     // Find if this entry already exists
@@ -122,7 +134,13 @@ function determineChanges(mdEntries, existingEntries) {
       entry.author === mdEntry.author && entry.title === mdEntry.title
     );
     
-    if (!existingEntry) {
+    if (mdEntry.isCompleted) {
+      // Book is completed, mark for removal and completion handling
+      completedEntries.push({
+        ...mdEntry,
+        existingMatch: existingEntry ? existingEntry.fullMatch : null
+      });
+    } else if (!existingEntry) {
       // New entry to add
       entriesToAdd.push(mdEntry);
     } else if (existingEntry.progress !== mdEntry.progress) {
@@ -134,7 +152,7 @@ function determineChanges(mdEntries, existingEntries) {
     }
   });
   
-  return { entriesToAdd, entriesToUpdate };
+  return { entriesToAdd, entriesToUpdate, completedEntries };
 }
 
 // Function to generate progress bar
@@ -151,6 +169,57 @@ function generateProgressBar(progress) {
   return progressBar;
 }
 
+// Function to handle completed books
+async function handleCompletedBooks(completedEntries) {
+  if (completedEntries.length === 0) return;
+  
+  const fs = require('fs').promises;
+  const path = require('path');
+  
+  // Read the readingprogress.md file to remove completed books
+  const mdContent = await fs.readFile('readingprogress.md', 'utf8');
+  let updatedMdContent = mdContent;
+  
+  // Read the main readindex.html to add completed books
+  const readIndexContent = await fs.readFile('readindex.html', 'utf8');
+  let updatedReadIndexContent = readIndexContent;
+  
+  // Get current year
+  const currentYear = new Date().getFullYear();
+  
+  for (const completedBook of completedEntries) {
+    // Remove from readingprogress.md
+    const lineToRemove = `${completedBook.author}, ${completedBook.title}, ${completedBook.progressStr}`;
+    updatedMdContent = updatedMdContent.replace(lineToRemove + '\n', '');
+    updatedMdContent = updatedMdContent.replace(lineToRemove, '');
+    
+    // Add to readindex.html right after the year header (as first entry)
+    const yearPattern = new RegExp(`(<b>${currentYear}</b><br>)`, 'i');
+    const yearMatch = updatedReadIndexContent.match(yearPattern);
+    
+    if (yearMatch) {
+      const bookEntry = `\t${completedBook.author}, ${completedBook.title}<br>\n`;
+      const replacement = yearMatch[1] + bookEntry;
+      updatedReadIndexContent = updatedReadIndexContent.replace(yearMatch[0], replacement);
+    }
+    
+    // Update index.html "recently read >" line
+    const indexContent = await fs.readFile('../index.html', 'utf8');
+    const recentlyReadPattern = /(<a class="no-underline" href="read\/readindex\.html"><b>Recently read ><\/b><\/a><br>\s*<p>\s*<i>)[^<]*(<\/i><br>)/;
+    const updatedIndexContent = indexContent.replace(
+      recentlyReadPattern, 
+      `$1${completedBook.author}, ${completedBook.title}$2`
+    );
+    await fs.writeFile('../index.html', updatedIndexContent);
+  }
+  
+  // Write updated files
+  await fs.writeFile('readingprogress.md', updatedMdContent.trim() + '\n');
+  await fs.writeFile('readindex.html', updatedReadIndexContent);
+  
+  return completedEntries.length;
+}
+
 // Main function to update the HTML with entries from the MD file
 async function updateReadingProgress() {
   try {
@@ -160,7 +229,7 @@ async function updateReadingProgress() {
     const mdFile = await fs.readFile('readingprogress.md', 'utf8');
     
     // Parse the MD file
-    const mdLines = mdFile.trim().split('\n');
+    const mdLines = mdFile.trim().split('\n').filter(line => line.trim() !== '');
     const mdEntries = mdLines.map(parseMdLine);
     
     // Extract existing entries
@@ -172,11 +241,23 @@ async function updateReadingProgress() {
     }
     
     // Determine what needs to be added or updated
-    const { entriesToAdd, entriesToUpdate } = determineChanges(mdEntries, existingEntries);
+    const { entriesToAdd, entriesToUpdate, completedEntries } = determineChanges(mdEntries, existingEntries);
     
-    let updatedHtml = htmlFile;
+    // Handle completed books first
+    const completedCount = await handleCompletedBooks(completedEntries);
     
-    // First, update existing entries with new progress
+    // Re-read the HTML file after handling completed books
+    const updatedHtmlFile = await fs.readFile('readindex.html', 'utf8');
+    let updatedHtml = updatedHtmlFile;
+    
+    // Remove completed books from in-progress section
+    completedEntries.forEach(entry => {
+      if (entry.existingMatch) {
+        updatedHtml = updatedHtml.replace(entry.existingMatch, '');
+      }
+    });
+    
+    // Update existing entries with new progress
     entriesToUpdate.forEach(entry => {
       const newProgressBar = generateProgressBar(entry.progress);
       const newRowHtml = `<div class="row">
@@ -186,7 +267,7 @@ async function updateReadingProgress() {
       updatedHtml = updatedHtml.replace(entry.existingMatch, newRowHtml);
     });
     
-    // Then add new entries at the beginning of the section
+    // Add new entries at the beginning of the section
     if (entriesToAdd.length > 0) {
       let newEntriesHtml = "";
       entriesToAdd.forEach(entry => {
@@ -207,9 +288,10 @@ async function updateReadingProgress() {
     // Write the updated HTML back to the file
     await fs.writeFile('readindex.html', updatedHtml);
     
-    console.log(`Successfully updated reading progress in readindex.html:
+    console.log(`Successfully updated reading progress:
 - ${entriesToAdd.length} new entries added
-- ${entriesToUpdate.length} existing entries updated`);
+- ${entriesToUpdate.length} existing entries updated
+- ${completedCount} books completed and moved`);
   } catch (error) {
     console.error("Error updating reading progress:", error);
   }
