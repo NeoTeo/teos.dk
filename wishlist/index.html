@@ -86,6 +86,14 @@
 	.book-item:hover .book-tooltip {
 		opacity: 1;
 	}
+	
+	.book-tooltip.js-controlled {
+		opacity: 0 !important;
+	}
+	
+	.book-tooltip.js-controlled.show {
+		opacity: 1 !important;
+	}
 
 	.placeholder-text {
 		color: #666;
@@ -336,24 +344,53 @@
 		}
 		
 		let scrollHandler = null;
+		let scrollTimeout = null;
 		
-		bookItem.addEventListener('mouseenter', (e) => {
-			updateTooltipPosition();
-			
-			// Add scroll listener when tooltip becomes active
-			scrollHandler = () => {
+		if (isTouchDevice) {
+			// On touch devices, show tooltip on tap, hide on scroll or tap elsewhere
+			bookItem.addEventListener('touchstart', (e) => {
 				updateTooltipPosition();
-			};
-			window.addEventListener('scroll', scrollHandler, { passive: true });
-		});
-		
-		bookItem.addEventListener('mouseleave', (e) => {
-			// Remove scroll listener when leaving the book
-			if (scrollHandler) {
-				window.removeEventListener('scroll', scrollHandler);
-				scrollHandler = null;
-			}
-		});
+				tooltip.classList.add('js-controlled', 'show');
+				
+				// Set up scroll handler to hide immediately
+				if (!scrollHandler) {
+					scrollHandler = () => {
+						tooltip.classList.remove('show');
+					};
+					window.addEventListener('scroll', scrollHandler, { passive: true });
+				}
+			});
+			
+			// Clean up when touching elsewhere
+			document.addEventListener('touchstart', (e) => {
+				if (!bookItem.contains(e.target)) {
+					tooltip.classList.remove('js-controlled', 'show');
+					if (scrollHandler) {
+						window.removeEventListener('scroll', scrollHandler);
+						scrollHandler = null;
+					}
+				}
+			});
+		} else {
+			// On desktop, use normal hover behavior
+			bookItem.addEventListener('mouseenter', (e) => {
+				updateTooltipPosition();
+				
+				// Follow smoothly on scroll
+				scrollHandler = () => {
+					updateTooltipPosition();
+				};
+				window.addEventListener('scroll', scrollHandler, { passive: true });
+			});
+			
+			bookItem.addEventListener('mouseleave', (e) => {
+				// Remove scroll listener
+				if (scrollHandler) {
+					window.removeEventListener('scroll', scrollHandler);
+					scrollHandler = null;
+				}
+			});
+		}
 		
 		bookItem.appendChild(img);
 		bookItem.appendChild(tooltip);
@@ -368,6 +405,9 @@
 		return bookItem;
 	}
 
+	// Detect touch devices
+	const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+	
 	// Load books when page loads
 	document.addEventListener('DOMContentLoaded', loadBooks);
 	
