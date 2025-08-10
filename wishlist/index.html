@@ -329,10 +329,30 @@
 		tooltip.innerHTML = `<strong>${book.title}</strong><br>by ${book.author}`;
 		
 		// Position tooltip on hover
-		bookItem.addEventListener('mouseenter', (e) => {
+		function updateTooltipPosition() {
 			const rect = bookItem.getBoundingClientRect();
 			tooltip.style.left = (rect.left + rect.width / 2) + 'px';
 			tooltip.style.top = (rect.bottom + 10) + 'px';
+		}
+		
+		let scrollHandler = null;
+		
+		bookItem.addEventListener('mouseenter', (e) => {
+			updateTooltipPosition();
+			
+			// Add scroll listener when tooltip becomes active
+			scrollHandler = () => {
+				updateTooltipPosition();
+			};
+			window.addEventListener('scroll', scrollHandler, { passive: true });
+		});
+		
+		bookItem.addEventListener('mouseleave', (e) => {
+			// Remove scroll listener when leaving the book
+			if (scrollHandler) {
+				window.removeEventListener('scroll', scrollHandler);
+				scrollHandler = null;
+			}
 		});
 		
 		bookItem.appendChild(img);
