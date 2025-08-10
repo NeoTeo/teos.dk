@@ -78,13 +78,14 @@
 		min-width: 200px;
 		text-align: center;
 		line-height: 1.3;
-		transform: translateX(-50%);
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 	}
 
-	.book-item:hover .book-tooltip {
-		opacity: 1;
+	@media (hover: hover) {
+		.book-item:hover .book-tooltip {
+			opacity: 1;
+		}
 	}
 	
 	.book-tooltip.js-controlled {
@@ -236,42 +237,6 @@
 		};
 	}
 
-	function createBookElement(book) {
-		const bookItem = document.createElement('div');
-		bookItem.className = 'book-item';
-		
-		const img = document.createElement('img');
-		img.src = `images/${book.image}`;
-		img.alt = `${book.title} by ${book.author}`;
-		img.className = 'book-cover';
-		
-		img.onerror = function() {
-			this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDEyMCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTgwIiBmaWxsPSIjZjBmMGYwIiBzdHJva2U9IiNjY2MiLz4KPHRleHQgeD0iNjAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==';
-		};
-		
-		const tooltip = document.createElement('div');
-		tooltip.className = 'book-tooltip';
-		tooltip.innerHTML = `<strong>${book.title}</strong><br>by ${book.author}`;
-		
-		// Position tooltip on hover
-		bookItem.addEventListener('mouseenter', (e) => {
-			const rect = bookItem.getBoundingClientRect();
-			tooltip.style.left = (rect.left + rect.width / 2) + 'px';
-			tooltip.style.top = (rect.bottom + 10) + 'px';
-		});
-		
-		bookItem.appendChild(img);
-		bookItem.appendChild(tooltip);
-		
-		if (book.url && book.url.trim()) {
-			bookItem.addEventListener('click', () => {
-				window.open(book.url, '_blank');
-			});
-			bookItem.style.cursor = 'pointer';
-		}
-		
-		return bookItem;
-	}
 
 	function masonryLayout() {
 		const container = document.getElementById('books-container');
@@ -339,39 +304,35 @@
 		// Position tooltip on hover
 		function updateTooltipPosition() {
 			const rect = bookItem.getBoundingClientRect();
-			tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+			
+			// Estimate tooltip width based on text content
+			// Average character width in 14px font is about 8px, plus padding
+			const textContent = book.title + ' by ' + book.author;
+			const estimatedWidth = Math.min(Math.max(textContent.length * 7 + 24, 200), 300);
+			
+			// Calculate horizontal position (centered on book, accounting for tooltip width)
+			let left = rect.left + rect.width / 2 - estimatedWidth / 2;
+			
+			// Ensure tooltip doesn't go off screen
+			const viewportWidth = window.innerWidth;
+			
+			// Adjust if too far left
+			if (left < 10) {
+				left = 10;
+			}
+			// Adjust if too far right  
+			else if (left + estimatedWidth > viewportWidth - 10) {
+				left = viewportWidth - estimatedWidth - 10;
+			}
+			
+			tooltip.style.left = left + 'px';
 			tooltip.style.top = (rect.bottom + 10) + 'px';
 		}
 		
 		let scrollHandler = null;
 		let scrollTimeout = null;
 		
-		if (isTouchDevice) {
-			// On touch devices, show tooltip on tap, hide on scroll or tap elsewhere
-			bookItem.addEventListener('touchstart', (e) => {
-				updateTooltipPosition();
-				tooltip.classList.add('js-controlled', 'show');
-				
-				// Set up scroll handler to hide immediately
-				if (!scrollHandler) {
-					scrollHandler = () => {
-						tooltip.classList.remove('show');
-					};
-					window.addEventListener('scroll', scrollHandler, { passive: true });
-				}
-			});
-			
-			// Clean up when touching elsewhere
-			document.addEventListener('touchstart', (e) => {
-				if (!bookItem.contains(e.target)) {
-					tooltip.classList.remove('js-controlled', 'show');
-					if (scrollHandler) {
-						window.removeEventListener('scroll', scrollHandler);
-						scrollHandler = null;
-					}
-				}
-			});
-		} else {
+		if (!isTouchDevice) {
 			// On desktop, use normal hover behavior
 			bookItem.addEventListener('mouseenter', (e) => {
 				updateTooltipPosition();
@@ -408,6 +369,7 @@
 	// Detect touch devices
 	const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 	
+
 	// Load books when page loads
 	document.addEventListener('DOMContentLoaded', loadBooks);
 	
