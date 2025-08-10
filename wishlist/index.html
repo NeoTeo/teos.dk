@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	<title>Wishlist</title>
+	<link href="../stylesheets/teostyle.css" rel="stylesheet" type="text/css" media="all">
+
+	<style>
+    body {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 90px;
+        margin-bottom: 50px;
+        width: 700px;
+		font-family: 'iA Writer Quattro S', serif !important;
+		font-size: 16px;
+		line-height: 1.4;
+	} 
+
+	h1 {
+		margin-bottom: 0;
+	}
+
+	hr {
+		margin-top: 0;
+	}
+
+	.section {
+		margin-bottom: 40px;
+	}
+
+	.section h2 {
+		margin-bottom: 20px;
+		font-size: 20px;
+	}
+
+	/* Masonry layout for books */
+	.books-masonry {
+		position: relative;
+		width: 100%;
+	}
+
+	.book-item {
+		position: absolute;
+		cursor: pointer;
+		padding: 10px 0;
+		margin: -10px 0;
+		width: calc(33.333% - 13.333px);
+	}
+
+	.book-cover {
+		width: 100%;
+		height: auto;
+		border-radius: 4px;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		display: block;
+	}
+
+	.book-item:hover .book-cover {
+		transform: translateY(-4px);
+		box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+	}
+
+	.book-tooltip {
+		position: fixed;
+		background: rgba(0,0,0,0.9);
+		color: white;
+		padding: 8px 12px;
+		border-radius: 4px;
+		font-size: 14px;
+		white-space: normal;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease;
+		z-index: 10000;
+		max-width: 300px;
+		min-width: 200px;
+		text-align: center;
+		line-height: 1.3;
+		transform: translateX(-50%);
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+	}
+
+	.book-item:hover .book-tooltip {
+		opacity: 1;
+	}
+
+	.placeholder-text {
+		color: #666;
+		font-style: italic;
+		text-align: center;
+		padding: 40px;
+	}
+
+	@media (max-width: 768px) {
+		body {
+			width: 90%;
+			margin-top: 40px;
+		}
+		
+		.book-item {
+			width: calc(50% - 10px);
+		}
+	}
+
+	@media (max-width: 480px) {
+		.book-item {
+			width: 100%;
+		}
+	}
+
+	</style>
+	</head>
+
+	<body>
+	<h1>Wishlist</h1>
+	<hr>
+	
+	<div class="section">
+		<h2>Books</h2>
+		<div> In order of preference i would like the books from:<br>
+			Books and Company<br>
+			Fantask (sci-fi only)<br>
+			Other independent book stores<br>
+			Politikens Boghandel/Arnold Busch<br>
+		</div>
+		<br>
+		<div id="books-container" class="books-masonry">
+			<div class="placeholder-text">Loading books...</div>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Clothes</h2>
+		<p class="placeholder-text">Coming soon...</p>
+	</div>
+
+	<div class="section">
+		<h2>Toys</h2>
+		<p class="placeholder-text">Coming soon...</p>
+	</div>
+
+    <div class="footer">
+        <a href="/index.html" class="home-button">
+            <img src="/home.png" alt="Home" />
+        </a>
+    </div>
+
+	<script>
+	async function loadBooks() {
+		try {
+			const response = await fetch('books.txt');
+			const text = await response.text();
+			
+			if (!text.trim()) {
+				document.getElementById('books-container').innerHTML = 
+					'<div class="placeholder-text">No books found in books.txt</div>';
+				return;
+			}
+			
+			const lines = text.trim().split('\n').filter(line => line.trim());
+			const booksContainer = document.getElementById('books-container');
+			
+			if (lines.length === 0) {
+				booksContainer.innerHTML = '<div class="placeholder-text">No books found</div>';
+				return;
+			}
+			
+			booksContainer.innerHTML = '';
+			
+			lines.forEach(line => {
+				const book = parseLine(line);
+				if (book) {
+					const bookElement = createBookElement(book);
+					booksContainer.appendChild(bookElement);
+				}
+			});
+			
+			// Initial layout after all books are added
+			setTimeout(masonryLayout, 50);
+		} catch (error) {
+			console.error('Error loading books:', error);
+			document.getElementById('books-container').innerHTML = 
+				'<div class="placeholder-text">Error loading books.txt</div>';
+		}
+	}
+
+	function parseLine(line) {
+		const parts = [];
+		let current = '';
+		let escaped = false;
+		let inQuotes = false;
+		
+		for (let i = 0; i < line.length; i++) {
+			const char = line[i];
+			
+			if (escaped) {
+				current += char;
+				escaped = false;
+			} else if (char === '\\') {
+				escaped = true;
+			} else if (char === '"') {
+				inQuotes = !inQuotes;
+			} else if (char === ':' && !inQuotes) {
+				parts.push(current);
+				current = '';
+			} else {
+				current += char;
+			}
+		}
+		
+		if (current || parts.length > 0) {
+			parts.push(current);
+		}
+		
+		if (parts.length < 3) {
+			console.warn('Invalid line format:', line);
+			return null;
+		}
+		
+		return {
+			author: parts[0].trim(),
+			title: parts[1].trim(),
+			image: parts[2].trim(),
+			url: parts.length > 3 && parts[3].trim() ? parts[3].trim() : null
+		};
+	}
+
+	function createBookElement(book) {
+		const bookItem = document.createElement('div');
+		bookItem.className = 'book-item';
+		
+		const img = document.createElement('img');
+		img.src = `images/${book.image}`;
+		img.alt = `${book.title} by ${book.author}`;
+		img.className = 'book-cover';
+		
+		img.onerror = function() {
+			this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDEyMCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTgwIiBmaWxsPSIjZjBmMGYwIiBzdHJva2U9IiNjY2MiLz4KPHRleHQgeD0iNjAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==';
+		};
+		
+		const tooltip = document.createElement('div');
+		tooltip.className = 'book-tooltip';
+		tooltip.innerHTML = `<strong>${book.title}</strong><br>by ${book.author}`;
+		
+		// Position tooltip on hover
+		bookItem.addEventListener('mouseenter', (e) => {
+			const rect = bookItem.getBoundingClientRect();
+			tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+			tooltip.style.top = (rect.bottom + 10) + 'px';
+		});
+		
+		bookItem.appendChild(img);
+		bookItem.appendChild(tooltip);
+		
+		if (book.url && book.url.trim()) {
+			bookItem.addEventListener('click', () => {
+				window.open(book.url, '_blank');
+			});
+			bookItem.style.cursor = 'pointer';
+		}
+		
+		return bookItem;
+	}
+
+	function masonryLayout() {
+		const container = document.getElementById('books-container');
+		const items = container.querySelectorAll('.book-item');
+		
+		if (items.length === 0) return;
+		
+		// Get number of columns based on screen size
+		const containerWidth = container.offsetWidth;
+		let columns = 3;
+		if (containerWidth <= 768) columns = 2;
+		if (containerWidth <= 480) columns = 1;
+		
+		const gap = 20;
+		const itemWidth = (containerWidth - (gap * (columns - 1))) / columns;
+		
+		// Initialize column heights
+		const columnHeights = new Array(columns).fill(0);
+		
+		// Position each item
+		items.forEach((item, index) => {
+			// Find the shortest column
+			const shortestColumn = columnHeights.indexOf(Math.min(...columnHeights));
+			
+			// Calculate position
+			const x = shortestColumn * (itemWidth + gap);
+			const y = columnHeights[shortestColumn];
+			
+			// Set item position and width
+			item.style.left = x + 'px';
+			item.style.top = y + 'px';
+			item.style.width = itemWidth + 'px';
+			
+			// Update column height
+			columnHeights[shortestColumn] += item.offsetHeight + gap;
+		});
+		
+		// Set container height
+		const maxHeight = Math.max(...columnHeights);
+		container.style.height = maxHeight + 'px';
+	}
+
+	function createBookElement(book) {
+		const bookItem = document.createElement('div');
+		bookItem.className = 'book-item';
+		
+		const img = document.createElement('img');
+		img.src = `images/${book.image}`;
+		img.alt = `${book.title} by ${book.author}`;
+		img.className = 'book-cover';
+		
+		img.onerror = function() {
+			this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDEyMCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTgwIiBmaWxsPSIjZjBmMGYwIiBzdHJva2U9IiNjY2MiLz4KPHRleHQgeD0iNjAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==';
+		};
+		
+		// Wait for image to load before calculating layout
+		img.onload = function() {
+			setTimeout(masonryLayout, 10);
+		};
+		
+		const tooltip = document.createElement('div');
+		tooltip.className = 'book-tooltip';
+		tooltip.innerHTML = `<strong>${book.title}</strong><br>by ${book.author}`;
+		
+		// Position tooltip on hover
+		bookItem.addEventListener('mouseenter', (e) => {
+			const rect = bookItem.getBoundingClientRect();
+			tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+			tooltip.style.top = (rect.bottom + 10) + 'px';
+		});
+		
+		bookItem.appendChild(img);
+		bookItem.appendChild(tooltip);
+		
+		if (book.url && book.url.trim()) {
+			bookItem.addEventListener('click', () => {
+				window.open(book.url, '_blank');
+			});
+			bookItem.style.cursor = 'pointer';
+		}
+		
+		return bookItem;
+	}
+
+	// Load books when page loads
+	document.addEventListener('DOMContentLoaded', loadBooks);
+	
+	// Recalculate layout on window resize
+	window.addEventListener('resize', () => {
+		setTimeout(masonryLayout, 100);
+	});
+	</script>
+
+	</body>
+
+</html>
