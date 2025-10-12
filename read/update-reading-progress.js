@@ -171,7 +171,7 @@ function generateProgressBar(progress) {
 
 // Function to handle completed books
 async function handleCompletedBooks(completedEntries) {
-  if (completedEntries.length === 0) return;
+  if (completedEntries.length === 0) return 0;
   
   const fs = require('fs').promises;
   const path = require('path');
@@ -220,6 +220,28 @@ async function handleCompletedBooks(completedEntries) {
   return completedEntries.length;
 }
 
+// Function to detect duplicate books
+function detectDuplicates(mdEntries) {
+  const seen = new Map();
+  const duplicates = [];
+
+  mdEntries.forEach((entry, index) => {
+    const key = `${entry.author}|||${entry.title}`;
+
+    if (seen.has(key)) {
+      duplicates.push({
+        author: entry.author,
+        title: entry.title,
+        lineNumbers: [seen.get(key) + 1, index + 1]
+      });
+    } else {
+      seen.set(key, index);
+    }
+  });
+
+  return duplicates;
+}
+
 // Main function to update the HTML with entries from the MD file
 async function updateReadingProgress() {
   try {
@@ -227,10 +249,21 @@ async function updateReadingProgress() {
     const fs = require('fs').promises;
     const htmlFile = await fs.readFile('readindex.html', 'utf8');
     const mdFile = await fs.readFile('readingprogress.md', 'utf8');
-    
+
     // Parse the MD file
     const mdLines = mdFile.trim().split('\n').filter(line => line.trim() !== '');
     const mdEntries = mdLines.map(parseMdLine);
+
+    // Check for duplicates
+    const duplicates = detectDuplicates(mdEntries);
+    if (duplicates.length > 0) {
+      console.warn('\n⚠️  WARNING: Duplicate books found in readingprogress.md:\n');
+      duplicates.forEach(dup => {
+        console.warn(`   "${dup.author}, ${dup.title}" appears on lines ${dup.lineNumbers.join(' and ')}`);
+      });
+      console.warn('\n   Please remove duplicate entries before continuing.\n');
+      return;
+    }
     
     // Extract existing entries
     const { entries: existingEntries, inProgressIndex } = extractExistingEntries(htmlFile);
