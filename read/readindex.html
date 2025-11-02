@@ -43,6 +43,29 @@
 	width: 20%;
 	}
 
+	/* Tooltip styles */
+	.tooltip {
+		position: absolute;
+		background-color: #333;
+		color: #fff;
+		padding: 4px 8px;
+		border-radius: 3px;
+		font-size: 14px;
+		pointer-events: none;
+		z-index: 1000;
+		white-space: nowrap;
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+
+	.tooltip.visible {
+		opacity: 1;
+	}
+
+	[data-pagecount]:hover {
+		cursor: help;
+	}
+
 	</style>
 	</head>
 
@@ -50,7 +73,8 @@
 	<h1>Read</h1>
 	<hr>
 	<p>
-	<b>2025</b><br>	Daniel Mulhall, Ulysses a reader's odyssey<br>
+	<b>2025</b><br>	
+	<div data-isbn10="9781848408296" data-pagecount="314">Daniel Mulhall, Ulysses a reader's odyssey</div>
 	James Joyce, Ulysses<br>
 	Kenya Hara, White<br>
 	Gisèle Freund, Fotografia e Società<br>
@@ -146,6 +170,140 @@
             <img src="/home.png" alt="Home" />
         </a>
     </div>
+
+	<script>
+		// Tooltip functionality for page count and year stats
+		(function() {
+			let tooltip = null;
+
+			// Create tooltip element
+			function createTooltip() {
+				const div = document.createElement('div');
+				div.className = 'tooltip';
+				document.body.appendChild(div);
+				return div;
+			}
+
+			// Show tooltip with text
+			function showTooltip(element, text, position = 'below') {
+				if (!tooltip) {
+					tooltip = createTooltip();
+				}
+				tooltip.textContent = text;
+
+				const rect = element.getBoundingClientRect();
+
+				if (position === 'left') {
+					// Position to the left of the element
+					tooltip.style.left = (rect.left + window.scrollX - tooltip.offsetWidth - 10) + 'px';
+					tooltip.style.top = (rect.top + window.scrollY) + 'px';
+				} else {
+					// Position below the element (default)
+					tooltip.style.left = (rect.left + window.scrollX) + 'px';
+					tooltip.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+				}
+
+				// Use setTimeout to ensure opacity transition works
+				setTimeout(() => tooltip.classList.add('visible'), 10);
+			}
+
+			// Hide tooltip
+			function hideTooltip() {
+				if (tooltip) {
+					tooltip.classList.remove('visible');
+				}
+			}
+
+			// Calculate year statistics
+			function getYearStats(yearElement) {
+				// Find the parent paragraph
+				let parent = yearElement.parentElement;
+
+				// Count books and pages
+				let bookCount = 0;
+				let totalPages = 0;
+				let node = yearElement.nextSibling;
+				let hasTextBeforeBr = false;
+
+				while (node) {
+					if (node.nodeType === Node.TEXT_NODE) {
+						// Check if this text node has meaningful content (not just whitespace)
+						if (node.textContent.trim().length > 0) {
+							hasTextBeforeBr = true;
+						}
+					} else if (node.nodeType === Node.ELEMENT_NODE) {
+						if (node.tagName === 'BR') {
+							// Count this as a book if there was text before it
+							if (hasTextBeforeBr) {
+								bookCount++;
+								hasTextBeforeBr = false;
+							}
+						} else if (node.tagName === 'SPAN' && node.hasAttribute('data-pagecount')) {
+							// Book in a span tag
+							bookCount++;
+							const pageCount = parseInt(node.getAttribute('data-pagecount'));
+							if (!isNaN(pageCount)) {
+								totalPages += pageCount;
+							}
+						} else if (node.tagName === 'DIV' && node.hasAttribute('data-pagecount') && !node.classList.contains('row')) {
+							// Book in a div tag (completed book with metadata, not in-progress)
+							bookCount++;
+							const pageCount = parseInt(node.getAttribute('data-pagecount'));
+							if (!isNaN(pageCount)) {
+								totalPages += pageCount;
+							}
+						}
+					}
+					node = node.nextSibling;
+				}
+
+				return { bookCount, totalPages };
+			}
+
+			// Attach event listeners to all elements with data-pagecount
+			function attachListeners() {
+				// Page count tooltips
+				const elements = document.querySelectorAll('[data-pagecount]');
+				elements.forEach(element => {
+					element.addEventListener('mouseenter', function(e) {
+						const pageCount = this.getAttribute('data-pagecount');
+						if (pageCount) {
+							showTooltip(this, pageCount + ' pages', 'left');
+						}
+					});
+
+					element.addEventListener('mouseleave', hideTooltip);
+				});
+
+				// Year header tooltips
+				const yearHeaders = document.querySelectorAll('b');
+				yearHeaders.forEach(header => {
+					// Check if this looks like a year (4 digits)
+					if (/^\d{4}$/.test(header.textContent.trim())) {
+						header.style.cursor = 'help';
+
+						header.addEventListener('mouseenter', function(e) {
+							const stats = getYearStats(this);
+							let text = stats.bookCount + ' books';
+							if (stats.totalPages > 0) {
+								text += ', ' + stats.totalPages.toLocaleString() + ' pages';
+							}
+							showTooltip(this, text);
+						});
+
+						header.addEventListener('mouseleave', hideTooltip);
+					}
+				});
+			}
+
+			// Initialize when DOM is ready
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', attachListeners);
+			} else {
+				attachListeners();
+			}
+		})();
+	</script>
 	</body>
 
 </html>

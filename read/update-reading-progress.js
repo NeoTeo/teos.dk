@@ -1,3 +1,8 @@
+// Function to normalize ISBN by removing hyphens
+function normalizeIsbn(isbn) {
+  return isbn ? isbn.replace(/-/g, '') : '';
+}
+
 // Function to parse the MD file content
 function parseMdLine(line) {
   let result = [];
@@ -92,7 +97,7 @@ function extractExistingEntries(html) {
   let rowMatch;
 
   while ((rowMatch = rowPattern.exec(inProgressSection)) !== null) {
-    const isbn10 = rowMatch[1] || '';
+    const isbn10 = normalizeIsbn(rowMatch[1] || '');
     const pageCount = rowMatch[2] ? parseInt(rowMatch[2]) : null;
     const fullAuthorTitle = rowMatch[3].trim();
     const progressBar = rowMatch[4].trim();
@@ -204,7 +209,8 @@ async function handleCompletedBooks(completedEntries) {
     const yearMatch = updatedReadIndexContent.match(yearPattern);
     
     if (yearMatch) {
-      const isbn10Attr = completedBook.isbn10 ? ` data-isbn10="${completedBook.isbn10}"` : '';
+      const normalizedIsbn = normalizeIsbn(completedBook.isbn10);
+      const isbn10Attr = normalizedIsbn ? ` data-isbn10="${normalizedIsbn}"` : '';
       const pageCountAttr = ` data-pagecount="${completedBook.totalPages}"`;
       const bookEntry = `\t<span${isbn10Attr}${pageCountAttr}>${completedBook.author}, ${completedBook.title}</span><br>\n`;
       const replacement = yearMatch[1] + bookEntry;
@@ -301,7 +307,8 @@ async function updateReadingProgress() {
     // Update existing entries with new progress
     entriesToUpdate.forEach(entry => {
       const newProgressBar = generateProgressBar(entry.progress);
-      const isbn10Attr = entry.isbn10 ? ` data-isbn10="${entry.isbn10}"` : '';
+      const normalizedIsbn = normalizeIsbn(entry.isbn10);
+      const isbn10Attr = normalizedIsbn ? ` data-isbn10="${normalizedIsbn}"` : '';
       const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
       const newRowHtml = `<div class="row"${isbn10Attr}${pageCountAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
