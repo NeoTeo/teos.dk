@@ -68,55 +68,59 @@ function extractExistingEntries(html) {
   // Look for the "in progress" section
   const inProgressPattern = /<i>in progress<\/i><br>/;
   const match = html.match(inProgressPattern);
-  
+
   if (!match) {
     return { entries: [], inProgressIndex: -1 };
   }
-  
+
   const inProgressIndex = match.index + match[0].length;
-  
+
   // Find the end of the "in progress" section - either next <br><br> or </p>
   const endSectionPattern = /<br><br>|<\/p>/;
   const endMatch = html.substring(inProgressIndex).match(endSectionPattern);
-  
-  const endIndex = endMatch 
-    ? inProgressIndex + endMatch.index 
+
+  const endIndex = endMatch
+    ? inProgressIndex + endMatch.index
     : html.length;
-  
+
   const inProgressSection = html.substring(inProgressIndex, endIndex);
-  
-  // Extract all row entries
-  const rowPattern = /<div class="row">[\s\S]*?<div class="author">(.*?)<\/div>[\s\S]*?<div class="progress">(.*?)<\/div><\/div>/g;
-  
+
+  // Extract all row entries - updated to capture data-pagecount
+  const rowPattern = /<div class="row"(?:\s+data-isbn10="([^"]*)")?(?:\s+data-pagecount="([^"]*)")?>[\s\S]*?<div class="author">(.*?)<\/div>[\s\S]*?<div class="progress">(.*?)<\/div><\/div>/g;
+
   const existingEntries = [];
   let rowMatch;
-  
+
   while ((rowMatch = rowPattern.exec(inProgressSection)) !== null) {
-    const fullAuthorTitle = rowMatch[1].trim();
-    const progressBar = rowMatch[2].trim();
-    
+    const isbn10 = rowMatch[1] || '';
+    const pageCount = rowMatch[2] ? parseInt(rowMatch[2]) : null;
+    const fullAuthorTitle = rowMatch[3].trim();
+    const progressBar = rowMatch[4].trim();
+
     // Parse author and title
     const lastCommaIndex = fullAuthorTitle.lastIndexOf(', ');
     if (lastCommaIndex !== -1) {
       const author = fullAuthorTitle.substring(0, lastCommaIndex);
       const title = fullAuthorTitle.substring(lastCommaIndex + 2);
-      
+
       // Extract progress from progress bar (position of *)
       const progressMatch = progressBar.match(/I(-*)(\*)(-*)I/);
       const progress = progressMatch ? progressMatch[1].length + 1 : 0;
-      
+
       existingEntries.push({
         author,
         title,
         progress,
+        pageCount,
+        isbn10,
         fullMatch: rowMatch[0],
         authorTitleText: fullAuthorTitle
       });
     }
   }
-  
-  return { 
-    entries: existingEntries, 
+
+  return {
+    entries: existingEntries,
     inProgressIndex,
     endSectionIndex: endIndex
   };
@@ -127,31 +131,33 @@ function determineChanges(mdEntries, existingEntries) {
   const entriesToAdd = [];
   const entriesToUpdate = [];
   const completedEntries = [];
-  
+
   mdEntries.forEach(mdEntry => {
     // Find if this entry already exists
-    const existingEntry = existingEntries.find(entry => 
+    const existingEntry = existingEntries.find(entry =>
       entry.author === mdEntry.author && entry.title === mdEntry.title
     );
-    
+
     if (mdEntry.isCompleted) {
       // Book is completed, mark for removal and completion handling
       completedEntries.push({
         ...mdEntry,
+        isbn10: existingEntry ? existingEntry.isbn10 : '',
         existingMatch: existingEntry ? existingEntry.fullMatch : null
       });
     } else if (!existingEntry) {
       // New entry to add
       entriesToAdd.push(mdEntry);
-    } else if (existingEntry.progress !== mdEntry.progress) {
-      // Entry exists but progress changed
+    } else if (existingEntry.progress !== mdEntry.progress || existingEntry.pageCount !== mdEntry.totalPages) {
+      // Entry exists but progress or page count changed
       entriesToUpdate.push({
         ...mdEntry,
+        isbn10: existingEntry.isbn10,
         existingMatch: existingEntry.fullMatch
       });
     }
   });
-  
+
   return { entriesToAdd, entriesToUpdate, completedEntries };
 }
 
@@ -198,7 +204,9 @@ async function handleCompletedBooks(completedEntries) {
     const yearMatch = updatedReadIndexContent.match(yearPattern);
     
     if (yearMatch) {
-      const bookEntry = `\t${completedBook.author}, ${completedBook.title}<br>\n`;
+      const isbn10Attr = completedBook.isbn10 ? ` data-isbn10="${completedBook.isbn10}"` : '';
+      const pageCountAttr = ` data-pagecount="${completedBook.totalPages}"`;
+      const bookEntry = `\t<span${isbn10Attr}${pageCountAttr}>${completedBook.author}, ${completedBook.title}</span><br>\n`;
       const replacement = yearMatch[1] + bookEntry;
       updatedReadIndexContent = updatedReadIndexContent.replace(yearMatch[0], replacement);
     }
@@ -293,10 +301,12 @@ async function updateReadingProgress() {
     // Update existing entries with new progress
     entriesToUpdate.forEach(entry => {
       const newProgressBar = generateProgressBar(entry.progress);
-      const newRowHtml = `<div class="row">
+      const isbn10Attr = entry.isbn10 ? ` data-isbn10="${entry.isbn10}"` : '';
+      const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
+      const newRowHtml = `<div class="row"${isbn10Attr}${pageCountAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
 <div class="progress">${newProgressBar}</div></div>`;
-      
+
       updatedHtml = updatedHtml.replace(entry.existingMatch, newRowHtml);
     });
     
@@ -305,7 +315,8 @@ async function updateReadingProgress() {
       let newEntriesHtml = "";
       entriesToAdd.forEach(entry => {
         const progressBar = generateProgressBar(entry.progress);
-        newEntriesHtml += `<div class="row">
+        const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
+        newEntriesHtml += `<div class="row" data-isbn10=""${pageCountAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
 <div class="progress">${progressBar}</div></div>
 `;
