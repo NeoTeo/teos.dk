@@ -212,7 +212,7 @@ async function handleCompletedBooks(completedEntries) {
       const normalizedIsbn = normalizeIsbn(completedBook.isbn10);
       const isbn10Attr = normalizedIsbn ? ` data-isbn10="${normalizedIsbn}"` : '';
       const pageCountAttr = ` data-pagecount="${completedBook.totalPages}"`;
-      const bookEntry = `\t<span${isbn10Attr}${pageCountAttr}>${completedBook.author}, ${completedBook.title}</span><br>\n`;
+      const bookEntry = `\t<span data-book${isbn10Attr}${pageCountAttr}>${completedBook.author}, ${completedBook.title}</span><br>\n`;
       const replacement = yearMatch[1] + bookEntry;
       updatedReadIndexContent = updatedReadIndexContent.replace(yearMatch[0], replacement);
     }

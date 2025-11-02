@@ -48,6 +48,7 @@ The script:
 
 Books in the HTML have data attributes for programmatic access:
 
+- `data-book`: Marks an element as a book entry (required for year statistics counting)
 - `data-isbn10`: ISBN-10 identifier for the book (may be empty for books without ISBNs). Hyphens are automatically stripped to normalize the format.
 - `data-pagecount`: Total page count from the markdown file (source of truth)
 
@@ -73,7 +74,7 @@ When hovering over a year header (e.g., "2025", "2024"), a tooltip displays:
 Implementation:
 - CSS tooltip styling in the `<style>` section
 - JavaScript positions book page count tooltips to the left of entries
-- Year statistics calculated by counting text nodes + `<br>`, `<span>`, and `<div>` elements with metadata
+- Year statistics calculated by counting `[data-book]` elements in each year's paragraph
 - Help cursor indicates interactive elements
 - Page counts formatted with comma separators for readability
 

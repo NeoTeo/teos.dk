@@ -73,18 +73,15 @@
 	<h1>Read</h1>
 	<hr>
 	<p>
-	<b>2025</b><br>	
-	<div data-isbn10="9781848408296" data-pagecount="314">Daniel Mulhall, Ulysses a reader's odyssey</div>
-	James Joyce, Ulysses<br>
-	Kenya Hara, White<br>
-	Gisèle Freund, Fotografia e Società<br>
-	Michael Malice(organized by), The Anarchist Handbook<br>
-
-	
-
-	Craig Mod, Things Become Other Things<br>
-	Denis Johnson, Train Dreams<br>
-	Gioia & Gwynn, The Art of the Short Story<br>
+	<b>2025</b><br>
+	<span data-book data-isbn10="9781848408296" data-pagecount="314">Daniel Mulhall, Ulysses a reader's odyssey</span><br>
+	<span data-book data-isbn10="9780141197418" data-pagecount="1296">James Joyce, Ulysses</span><br>
+	<span data-book data-isbn10="9783037781838" data-pagecount="79">Kenya Hara, White</span><br>
+	<span data-book data-pagecount="193">Gisèle Freund, Fotografia e Società</span><br>
+	<span data-book data-isbn10="9798748719629" data-pagecount="365">Michael Malice(organized by), The Anarchist Handbook</span><br>
+	<span data-book data-isbn10="9780593732540" data-pagecount="305">Craig Mod, Things Become Other Things</span><br>
+	<span data-book data-isbn10="9781783787623" data-pagecount="116">Denis Johnson, Train Dreams</span><br>
+	<span data-book data-isbn10="9780321363633" data-pagecount="944">Gioia & Gwynn, The Art of the Short Story</span><br>
 </p>
 	<p>
 	<i>in progress</i><br><div class="row" data-isbn10="9780393356250" data-pagecount="525">
@@ -135,32 +132,32 @@
 
 	<p>
 	<b>2024</b><br>
-	Marcel Proust, In Search of Lost Time - The Way by Swann's<br>
-	Susan Sontag, On Photography<br>
-	Ray Nayler, The Mountain in the Sea<br>
-	Adrian Tchaikovsky, Children of Time<br>
-	Annie Dillard, Teaching a Stone to Talk<br>
-	Peter Watts, Starfish<br>
-	Robin Sloan, Moonbound<br>
-	Dan Price, The Moonlight Chronicles<br>
-	Dan Price, How to Make a Journal of Your Life<br>
+	<span data-book>Marcel Proust, In Search of Lost Time - The Way by Swann's</span><br>
+	<span data-book>Susan Sontag, On Photography</span><br>
+	<span data-book>Ray Nayler, The Mountain in the Sea</span><br>
+	<span data-book>Adrian Tchaikovsky, Children of Time</span><br>
+	<span data-book>Annie Dillard, Teaching a Stone to Talk</span><br>
+	<span data-book>Peter Watts, Starfish</span><br>
+	<span data-book>Robin Sloan, Moonbound</span><br>
+	<span data-book>Dan Price, The Moonlight Chronicles</span><br>
+	<span data-book>Dan Price, How to Make a Journal of Your Life</span><br>
 	</p>
 	<p>
 	<b>2023</b><br>
-	Noam Chomsky, On Anarchism<br>
-	Karl Marx, Capital (Samuel Moore and Edward Aveling translation)<br>
-	John Gardner, The Art of Fiction<br>
-	Haruki Murakami, Writing as a Vocation<br>
-	Ivan Illich, Tools for Conviviality<br>
-	Plato's Republic (Richard W. Sterling and William C. Scott translation)<br>
-	Kim Stanley Robinson, Red Mars<br>
-	Michael Freeman, The Photographer's Eye<br>
-	Neal Stephenson, Anathem<br>
-	William Shakespeare, As You Like It<br>
-	Roland Barthes, Camera Lucida<br>
-	Umberto Eco, Il nome della rosa<br>
-	Kim Stanley Robinson, The High Sierra<br>
-	Umberto Eco, Il Pendolo di Foucault<br>
+	<span data-book>Noam Chomsky, On Anarchism</span><br>
+	<span data-book>Karl Marx, Capital (Samuel Moore and Edward Aveling translation)</span><br>
+	<span data-book>John Gardner, The Art of Fiction</span><br>
+	<span data-book>Haruki Murakami, Writing as a Vocation</span><br>
+	<span data-book>Ivan Illich, Tools for Conviviality</span><br>
+	<span data-book>Plato's Republic (Richard W. Sterling and William C. Scott translation)</span><br>
+	<span data-book>Kim Stanley Robinson, Red Mars</span><br>
+	<span data-book>Michael Freeman, The Photographer's Eye</span><br>
+	<span data-book>Neal Stephenson, Anathem</span><br>
+	<span data-book>William Shakespeare, As You Like It</span><br>
+	<span data-book>Roland Barthes, Camera Lucida</span><br>
+	<span data-book>Umberto Eco, Il nome della rosa</span><br>
+	<span data-book>Kim Stanley Robinson, The High Sierra</span><br>
+	<span data-book>Umberto Eco, Il Pendolo di Foucault</span><br>
 	<p>
 	<a href="read2022.html">2022</a><br>
 	</p>
@@ -219,43 +216,19 @@
 				// Find the parent paragraph
 				let parent = yearElement.parentElement;
 
-				// Count books and pages
+				// Count books and pages by looking for data-book attribute
 				let bookCount = 0;
 				let totalPages = 0;
-				let node = yearElement.nextSibling;
-				let hasTextBeforeBr = false;
 
-				while (node) {
-					if (node.nodeType === Node.TEXT_NODE) {
-						// Check if this text node has meaningful content (not just whitespace)
-						if (node.textContent.trim().length > 0) {
-							hasTextBeforeBr = true;
-						}
-					} else if (node.nodeType === Node.ELEMENT_NODE) {
-						if (node.tagName === 'BR') {
-							// Count this as a book if there was text before it
-							if (hasTextBeforeBr) {
-								bookCount++;
-								hasTextBeforeBr = false;
-							}
-						} else if (node.tagName === 'SPAN' && node.hasAttribute('data-pagecount')) {
-							// Book in a span tag
-							bookCount++;
-							const pageCount = parseInt(node.getAttribute('data-pagecount'));
-							if (!isNaN(pageCount)) {
-								totalPages += pageCount;
-							}
-						} else if (node.tagName === 'DIV' && node.hasAttribute('data-pagecount') && !node.classList.contains('row')) {
-							// Book in a div tag (completed book with metadata, not in-progress)
-							bookCount++;
-							const pageCount = parseInt(node.getAttribute('data-pagecount'));
-							if (!isNaN(pageCount)) {
-								totalPages += pageCount;
-							}
-						}
+				// Get all elements with data-book attribute in this paragraph
+				const books = parent.querySelectorAll('[data-book]');
+				books.forEach(book => {
+					bookCount++;
+					const pageCount = parseInt(book.getAttribute('data-pagecount'));
+					if (!isNaN(pageCount)) {
+						totalPages += pageCount;
 					}
-					node = node.nextSibling;
-				}
+				});
 
 				return { bookCount, totalPages };
 			}
