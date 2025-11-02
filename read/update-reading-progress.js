@@ -90,14 +90,14 @@ function extractExistingEntries(html) {
 
   const inProgressSection = html.substring(inProgressIndex, endIndex);
 
-  // Extract all row entries - updated to capture data-pagecount
-  const rowPattern = /<div class="row"(?:\s+data-isbn10="([^"]*)")?(?:\s+data-pagecount="([^"]*)")?>[\s\S]*?<div class="author">(.*?)<\/div>[\s\S]*?<div class="progress">(.*?)<\/div><\/div>/g;
+  // Extract all row entries - updated to capture data-isbn and data-pagecount
+  const rowPattern = /<div class="row"(?:\s+data-isbn="([^"]*)")?(?:\s+data-pagecount="([^"]*)")?>[\s\S]*?<div class="author">(.*?)<\/div>[\s\S]*?<div class="progress">(.*?)<\/div><\/div>/g;
 
   const existingEntries = [];
   let rowMatch;
 
   while ((rowMatch = rowPattern.exec(inProgressSection)) !== null) {
-    const isbn10 = normalizeIsbn(rowMatch[1] || '');
+    const isbn = normalizeIsbn(rowMatch[1] || '');
     const pageCount = rowMatch[2] ? parseInt(rowMatch[2]) : null;
     const fullAuthorTitle = rowMatch[3].trim();
     const progressBar = rowMatch[4].trim();
@@ -117,7 +117,7 @@ function extractExistingEntries(html) {
         title,
         progress,
         pageCount,
-        isbn10,
+        isbn,
         fullMatch: rowMatch[0],
         authorTitleText: fullAuthorTitle
       });
@@ -147,7 +147,7 @@ function determineChanges(mdEntries, existingEntries) {
       // Book is completed, mark for removal and completion handling
       completedEntries.push({
         ...mdEntry,
-        isbn10: existingEntry ? existingEntry.isbn10 : '',
+        isbn: existingEntry ? existingEntry.isbn : '',
         existingMatch: existingEntry ? existingEntry.fullMatch : null
       });
     } else if (!existingEntry) {
@@ -157,7 +157,7 @@ function determineChanges(mdEntries, existingEntries) {
       // Entry exists but progress or page count changed
       entriesToUpdate.push({
         ...mdEntry,
-        isbn10: existingEntry.isbn10,
+        isbn: existingEntry.isbn,
         existingMatch: existingEntry.fullMatch
       });
     }
@@ -209,10 +209,10 @@ async function handleCompletedBooks(completedEntries) {
     const yearMatch = updatedReadIndexContent.match(yearPattern);
     
     if (yearMatch) {
-      const normalizedIsbn = normalizeIsbn(completedBook.isbn10);
-      const isbn10Attr = normalizedIsbn ? ` data-isbn10="${normalizedIsbn}"` : '';
+      const normalizedIsbn = normalizeIsbn(completedBook.isbn);
+      const isbnAttr = normalizedIsbn ? ` data-isbn="${normalizedIsbn}"` : '';
       const pageCountAttr = ` data-pagecount="${completedBook.totalPages}"`;
-      const bookEntry = `\t<span data-book${isbn10Attr}${pageCountAttr}>${completedBook.author}, ${completedBook.title}</span><br>\n`;
+      const bookEntry = `\t<span data-book${isbnAttr}${pageCountAttr}>${completedBook.author}, ${completedBook.title}</span><br>\n`;
       const replacement = yearMatch[1] + bookEntry;
       updatedReadIndexContent = updatedReadIndexContent.replace(yearMatch[0], replacement);
     }
@@ -307,10 +307,10 @@ async function updateReadingProgress() {
     // Update existing entries with new progress
     entriesToUpdate.forEach(entry => {
       const newProgressBar = generateProgressBar(entry.progress);
-      const normalizedIsbn = normalizeIsbn(entry.isbn10);
-      const isbn10Attr = normalizedIsbn ? ` data-isbn10="${normalizedIsbn}"` : '';
+      const normalizedIsbn = normalizeIsbn(entry.isbn);
+      const isbnAttr = normalizedIsbn ? ` data-isbn="${normalizedIsbn}"` : '';
       const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
-      const newRowHtml = `<div class="row"${isbn10Attr}${pageCountAttr}>
+      const newRowHtml = `<div class="row"${isbnAttr}${pageCountAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
 <div class="progress">${newProgressBar}</div></div>`;
 
@@ -323,7 +323,7 @@ async function updateReadingProgress() {
       entriesToAdd.forEach(entry => {
         const progressBar = generateProgressBar(entry.progress);
         const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
-        newEntriesHtml += `<div class="row" data-isbn10=""${pageCountAttr}>
+        newEntriesHtml += `<div class="row" data-isbn=""${pageCountAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
 <div class="progress">${progressBar}</div></div>
 `;
