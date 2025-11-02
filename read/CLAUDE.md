@@ -42,6 +42,22 @@ The script:
 - Updates existing entries with new progress values
 - Adds new entries to the "in progress" section
 - Preserves the HTML structure and styling
+- Manages metadata (ISBN-10 and page count) on book entries
+
+### Book Metadata
+
+Books in the HTML have data attributes for programmatic access:
+
+- `data-isbn10`: ISBN-10 identifier for the book (may be empty for books without ISBNs)
+- `data-pagecount`: Total page count from the markdown file (source of truth)
+
+**Looking up book information:**
+Book data can be retrieved using the Open Library API with ISBN-10:
+- API endpoint: `https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&format=json&jscmd=data`
+- Example: `https://openlibrary.org/api/books?bibkeys=ISBN:0415138574&format=json&jscmd=data`
+- Documentation: https://openlibrary.org/dev/docs/api/books
+
+When books are completed and moved to the year section, their metadata is preserved in `<span>` tags.
 
 ## Architecture Notes
 
