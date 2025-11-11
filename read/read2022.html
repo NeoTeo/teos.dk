@@ -42,6 +42,29 @@
 	width: 20%;
 	}
 
+	/* Tooltip styles */
+	.tooltip {
+		position: absolute;
+		background-color: #333;
+		color: #fff;
+		padding: 4px 8px;
+		border-radius: 3px;
+		font-size: 14px;
+		pointer-events: none;
+		z-index: 1000;
+		white-space: nowrap;
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+
+	.tooltip.visible {
+		opacity: 1;
+	}
+
+	[data-pagecount]:hover {
+		cursor: help;
+	}
+
 	</style>
 	</head>
 
@@ -51,58 +74,167 @@
 
 	<p>
 	<b>2022</b><br>
+	<span data-book data-isbn="9781841499918" data-pagecount="624">James S. A. Corey, Caliban&rsquo;s War</span><br>
+	<span data-book data-isbn="9780374602574" data-pagecount="224">Tamara Shopsin, Laserwriter II</span><br>
+	<span data-book data-isbn="9780393635522" data-pagecount="502">Richard Powers, Overstory</span><br>
+	<span data-book data-isbn="0380789019" data-pagecount="388">Neil Gaiman, "Neverwhere" (unabridged audio)</span><br>
+	<span data-book data-isbn="9781781393192">Dante Alighieri, La Divina Commedia (Audible new edit - Ivano Marescotti)</span><br>
+	<span data-book data-isbn="9780743297332" data-pagecount="251">Ernest Hemingway, The Sun Also Rises</span><br>
+	<span data-book data-isbn="9780802755414" data-pagecount="238">Harlan Ellison, Approaching Oblivion</span><br>
+	<span data-book data-isbn="0140283293" data-pagecount="293">Jack Kerouac, On The Road</span><br>
+	<span data-book data-isbn="0385480016" data-pagecount="239">Anne Lamott, Bird By Bird</span><br>
+	<span data-book data-isbn="9780061233326" data-pagecount="288">Annie Dillard, Pilgrim At Tinker Creek</span><br>
+	<span data-book data-isbn="9780060777098" data-pagecount="304">Elmore Leonard, Get shorty</span><br>
+	<span data-book data-isbn="9780307950475" data-pagecount="272">Peter Heller, the dog stars</span><br>
+	<span data-book data-isbn="9780486264646" data-pagecount="72">Joseph Conrad, Heart of Darkness</span><br>
+	<span data-book data-isbn="9780356521749" data-pagecount="288">Iain M. Banks, Feersum Endjinn</span><br>
+	<span data-book data-isbn="9780241958377" data-pagecount="288">Sue Townsend, The Queen and I</span><br>
+	<span data-book data-isbn="9780141439686" data-pagecount="250">Jane Austen, Persuasion</span><br>
+	<span data-book data-isbn="9780201567632" data-pagecount="256">John Holt, Never Too Late</span><br>
+	<span data-book data-isbn="9781846046452" data-pagecount="288">Genzaburo Yoshino, How Do You Live?</span><br>
+	<span data-book data-isbn="9780140275360" data-pagecount="704">Homer, The Iliad(Lattimore)</span><br>
+	<span data-book data-isbn="9780142437247" data-pagecount="720">Herman Melville, Moby-Dick</span><br>
+	<span data-book data-isbn="9780307279415" data-pagecount="224">Verlyn Klinkenborg, Several short sentences about writing</span><br>
+	<span data-book data-isbn="9780451451392" data-pagecount="288">Nigel Findley, 2XS</span><br>
+	<span data-book data-isbn="9780385333849" data-pagecount="288">Kurt Vonnegut, Slaughterhouse Five</span><br>
+	<span data-book data-isbn="9780143105138" data-pagecount="496">Virgil, The Aeneid</span><br>
+	<span data-book data-isbn="9780316262347" data-pagecount="624">Kim Stanley Robinson, New York 2140</span><br>
+	<span data-book data-isbn="9780520203846" data-pagecount="100">Hesiod, Works &amp; Days</span><br>
+	<span data-book data-isbn="9781786693075" data-pagecount="512">Cory Doctorow, Walkaway</span><br>
+	<span data-book data-isbn="9780064409438" data-pagecount="202">C.S. Lewis, The Magician&rsquo;s Nephew</span><br>
+	<span data-book data-isbn="9780865712317" data-pagecount="128">John Taylor Gatto, Dumbing Us Down</span><br>
+	<span data-book data-isbn="9780064404990" data-pagecount="208">C.S. Lewis, The Lion, the Witch and the Wardrobe</span><br>
+	<span data-book data-isbn="9780061336461" data-pagecount="526">Steven Pinker, The Language Instinct</span><br>
+	<span data-book data-isbn="9780064471060" data-pagecount="224">C.S. Lewis, The Horse and his Boy</span><br>
+	<span data-book data-isbn="9780385490818" data-pagecount="311">Margaret Atwood, The Handmaid&rsquo;s Tale</span><br>
+	<span data-book data-isbn="9780199291151" data-pagecount="384">Richard Dawkins, The selfish gene</span><br>
+	<span data-book data-isbn="0060919884" data-pagecount="132">Annie Dillard, The Writing Life</span><br>
+	<span data-book data-isbn="9780393320039" data-pagecount="172">John Gardner, On becoming a novelist</span><br>
+	<span data-book data-isbn="9780140186475" data-pagecount="317">James Joyce, Dubliners</span><br>
+	<span data-book data-isbn="9780691156668" data-pagecount="157">Burger &amp; Starbird, The 5 Elements of Effective Thinking</span><br>
+	<span data-book data-isbn="9780140446388" data-pagecount="688">Herodotus, The Histories</span><br>
+	<span data-book data-isbn="9780486264783" data-pagecount="64">Oscar Wilde, The Importance of Being Earnest</span><br>
+	<span data-book data-isbn="9780345333926" data-pagecount="352">Larry Niven, Ringworld</span><br>
+	<span data-book data-isbn="9780393326420" data-pagecount="624">Ovid, Metamorphoses</span><br>
+	<span data-book data-isbn="9780393061642" data-pagecount="677">Alice LaPlante, The Making of a Story</span><br>
+	<span data-book data-isbn="9780141439563" data-pagecount="512">Charles Dickens, Great Expectations</span><br>
 	</p>
-
-	 James S. A. Corey, Caliban&rsquo;s War<br>
-	 Tamara Shopsin, Laserwriter II<br>
-	 Richard Powers, Overstory<br>
-	 Neil Gaiman, "Neverwhere" (unabridged audio)<br>
-	 Dante Alighieri, La Divina Commedia (Audible new edit - Ivano Marescotti)
-	 Ernest Hemingway, The Sun Also Rises<br>
-	 Harlan Ellison, Approaching Oblivion<br>
-	 Jack Kerouac, On The Road<br>
-	 Anne Lamott, Bird By Bird<br>
-	 Annie Dillard, Pilgrim At Tinker Creek<br>
-	 Elmore Leonard, Get shorty<br>
-	 Peter Heller, the dog stars<br>
-	 Joseph Conrad, Heart of Darkness<br>
-	 Iain M. Banks, Feersum Endjinn<br>
-	 Sue Townsend, The Queen and I<br>
-	 Jane Austen, Persuasion<br>
-	 John Holt, Never Too Late<br>
-	 Genzaburo Yoshino, How Do You Live?<br>
-	 Homer, The Iliad(Lattimore)<br>
-	 Herman Melville, Moby-Dick<br>
-	 Verlyn Klinkenborg, Several short sentences about writing<br>
-	 Nigel Findley, 2XS<br>
-	 Kurt Vonnegut, Slaughterhouse Five<br>
-	 Virgil, The Aeneid<br>
-	 Kim Stanley Robinson, New York 2140<br>
-	 Hesiod, Works &amp; Days<br>
-	 Cory Doctorow, Walkaway<br>
-	 C.S. Lewis, The Magician&rsquo;s Nephew<br>
-	 John Taylor Gatto, Dumbing Us Down<br>
-	 C.S. Lewis, The Lion, the Witch and the Wardrobe<br>
-	 Steven Pinker, The Language Instinct<br>
-	 C.S. Lewis, The Horse and his Boy<br>
-	 Margaret Atwood, The Handmaid&rsquo;s Tale<br>
-	 Richard Dawkins, The selfish gene<br>
-	 Annie Dillard, The Writing Life<br>
-	 John Gardner, On becoming a novelist<br>
-	 James Joyce, Dubliners<br>
-	 Burger &amp; Starbird, The 5 Elements of Effective Thinking<br>
-	 Herodotus, The Histories<br>
-	 Oscar Wilde, The Importance of Being Earnest<br>
-	 Larry Niven, Ringworld<br>
-	 Ovid, Metamorphoses<br>
-	 Alice LaPlante, The Making of a Story<br>
-	 Charles Dickens, Great Expectations<br>
 	
     <div class="footer">
         <a href="/index.html" class="home-button">
             <img src="/home.png" alt="Home" />
         </a>
     </div>
+
+	<script>
+		// Tooltip functionality for page count and year stats
+		(function() {
+			let tooltip = null;
+
+			// Create tooltip element
+			function createTooltip() {
+				const div = document.createElement('div');
+				div.className = 'tooltip';
+				document.body.appendChild(div);
+				return div;
+			}
+
+			// Show tooltip with text
+			function showTooltip(element, text, position = 'below') {
+				if (!tooltip) {
+					tooltip = createTooltip();
+				}
+				tooltip.textContent = text;
+
+				const rect = element.getBoundingClientRect();
+
+				if (position === 'left') {
+					// Position to the left of the element
+					tooltip.style.left = (rect.left + window.scrollX - tooltip.offsetWidth - 10) + 'px';
+					tooltip.style.top = (rect.top + window.scrollY) + 'px';
+				} else {
+					// Position below the element (default)
+					tooltip.style.left = (rect.left + window.scrollX) + 'px';
+					tooltip.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+				}
+
+				// Use setTimeout to ensure opacity transition works
+				setTimeout(() => tooltip.classList.add('visible'), 10);
+			}
+
+			// Hide tooltip
+			function hideTooltip() {
+				if (tooltip) {
+					tooltip.classList.remove('visible');
+				}
+			}
+
+			// Calculate year statistics
+			function getYearStats(yearElement) {
+				// Find the parent paragraph
+				let parent = yearElement.parentElement;
+
+				// Count books and pages by looking for data-book attribute
+				let bookCount = 0;
+				let totalPages = 0;
+
+				// Get all elements with data-book attribute in this paragraph
+				const books = parent.querySelectorAll('[data-book]');
+				books.forEach(book => {
+					bookCount++;
+					const pageCount = parseInt(book.getAttribute('data-pagecount'));
+					if (!isNaN(pageCount)) {
+						totalPages += pageCount;
+					}
+				});
+
+				return { bookCount, totalPages };
+			}
+
+			// Attach event listeners to all elements with data-pagecount
+			function attachListeners() {
+				// Page count tooltips
+				const elements = document.querySelectorAll('[data-pagecount]');
+				elements.forEach(element => {
+					element.addEventListener('mouseenter', function(e) {
+						const pageCount = this.getAttribute('data-pagecount');
+						if (pageCount) {
+							showTooltip(this, pageCount + ' pages', 'left');
+						}
+					});
+
+					element.addEventListener('mouseleave', hideTooltip);
+				});
+
+				// Year header tooltips
+				const yearHeaders = document.querySelectorAll('b');
+				yearHeaders.forEach(header => {
+					// Check if this looks like a year (4 digits)
+					if (/^\d{4}$/.test(header.textContent.trim())) {
+						header.style.cursor = 'help';
+
+						header.addEventListener('mouseenter', function(e) {
+							const stats = getYearStats(this);
+							let text = stats.bookCount + ' books';
+							if (stats.totalPages > 0) {
+								text += ', ' + stats.totalPages.toLocaleString() + ' pages';
+							}
+							showTooltip(this, text);
+						});
+
+						header.addEventListener('mouseleave', hideTooltip);
+					}
+				});
+			}
+
+			// Initialize when DOM is ready
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', attachListeners);
+			} else {
+				attachListeners();
+			}
+		})();
+	</script>
   </body>
 
 </html>
