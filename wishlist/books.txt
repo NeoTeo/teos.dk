@@ -1,16 +1,23 @@
-Robert D. Richardson:First We Read, Then We Write:19289b5b9b3e0549017027532b3331d1_MD5.png:"https://www.saxo.com/dk/first-we-read-then-we-write_robert-d-richardson_paperback_9781609383473":"A guide to developing reading and writing habits from a biographical master."
-Kenya Hara:Designing Design:2034402-1916964549.jpg::"Elegant exploration of design philosophy from the creative director of Muji."
-Henry David Thoreau:"The Journal 1837–1861":81AiNhup3VL._SL1500_.jpg::"The complete journals that formed the foundation for Walden and his other works."
-Qntm:"There Is No Antimemetics Division":9780593983751.jpg::"Mind-bending sci-fi about ideas that resist being remembered or understood."
-John Warner:"More than words: How to Think About Writing in the Age of AI":9781541605510.jpg.webp::"Timely examination of how AI changes our relationship with written expression."
-Lucy Laucht:"Il Dolce Far Niente: The Italian Way of Summer":COVER._Il_Dolce_Far_Niente_by_Lucy_Laught.webp::"A celebration of the Italian art of leisurely summer living."
-David Bohm:"Thought as a System":OIP-383676683.Ozxmc8BBGv_zTqjbRyl50gHaJ3.jpg::"Physicist's profound inquiry into the nature of thought and consciousness."
-Dr. Chris Kempshall:"Star Wars: The Rise and Fall of the Galactic Empire":galactic.jpg:"https://www.saxo.com/dk/star-wars-the-rise-and-fall-of-the-galactic-empire_bog_9780241655047":"A story of the rise and fall of Palpatine's Empire."
-Karl Marx (translated by Paul Reitter):Capital:marxcapital.jpg::"New translation of Marx's groundbreaking analysis of capitalist economics."
-Kenkō (Author), Chōmei (Author), Meredith McKinney (Editor, Translator, Introduction):Essays in Idleness and Hojoki:essays in idleness.jpg::"Two of the most important Buddhist tracts from Japan"
-Ian Hideo Levy (Translator):The Ten Thousand Leaves\: Poems from the Manyōshū:manyoshu.jpg::"A sweeping anthology of classical Japanese poetry, including poems about love, war, trees and mountains, everyday life, and so much more."
-Adam Smyth:The Book-Makers\: A History of the Book in Eighteen Lives:thebookmakers.jpg::"A history of the book with people put back in."
-Brian Eno and Bette A.:what art does\: an unfinished theory:whatartdoes.jpg::"What Art Does is an invitation to explore this vital question. It is a chance to understand how art is made by all of us. How it creates communities, opens our worlds, and can transform us.
+Robert D. Richardson:First We Read, Then We Write:book-19289b5b9b3e0549017027532b3331d1_MD5.png:"https://www.saxo.com/dk/first-we-read-then-we-write_robert-d-richardson_paperback_9781609383473":"A guide to developing reading and writing habits from a biographical master."
+Kenya Hara:Designing Design:book-2034402-1916964549.jpg::"Elegant exploration of design philosophy from the creative director of Muji."
+Henry David Thoreau:"The Journal 1837–1861":book-81AiNhup3VL._SL1500_.jpg::"The complete journals that formed the foundation for Walden and his other works."
+//Qntm:"There Is No Antimemetics Division":book-9780593983751.jpg::"Mind-bending sci-fi about ideas that resist being remembered or understood."
+//John Warner:"More than words: How to Think About Writing in the Age of AI":book-9781541605510.jpg.webp::"Timely examination of how AI changes our relationship with written expression."
+//Lucy Laucht:"Il Dolce Far Niente: The Italian Way of Summer":book-COVER._Il_Dolce_Far_Niente_by_Lucy_Laught.webp::"A celebration of the Italian art of leisurely summer living."
+David Bohm:"Thought as a System":book-OIP-383676683.Ozxmc8BBGv_zTqjbRyl50gHaJ3.jpg::"Physicist's profound inquiry into the nature of thought and consciousness."
+Dr. Chris Kempshall:"Star Wars: The Rise and Fall of the Galactic Empire":book-galactic.jpg:"https://www.saxo.com/dk/star-wars-the-rise-and-fall-of-the-galactic-empire_bog_9780241655047":"A story of the rise and fall of Palpatine's Empire."
+Karl Marx (translated by Paul Reitter):Capital:book-marxcapital.jpg::"New translation of Marx's groundbreaking analysis of capitalist economics."
+Kenkō (Author), Chōmei (Author), Meredith McKinney (Editor, Translator, Introduction):Essays in Idleness and Hojoki:book-essays in idleness.jpg::"Two of the most important Buddhist tracts from Japan"
+Ian Hideo Levy (Translator):The Ten Thousand Leaves\: Poems from the Manyōshū:book-manyoshu.jpg::"A sweeping anthology of classical Japanese poetry, including poems about love, war, trees and mountains, everyday life, and so much more."
+Adam Smyth:The Book-Makers\: A History of the Book in Eighteen Lives:book-thebookmakers.jpg::"A history of the book with people put back in."
+Brian Eno and Bette A.:what art does\: an unfinished theory:book-whatartdoes.jpg::"What Art Does is an invitation to explore this vital question. It is a chance to understand how art is made by all of us. How it creates communities, opens our worlds, and can transform us.
 
 Curious and playful, richly illustrated, full of ideas and life, it is an inspiring call to imagine a different future."
-Brian Eno:A Year With Swollen Appendices (25th anniversary edition):ayearwithswollenappendices.jpg::"This year in the life of provocateur and cerebral rock star Brian Eno covers four recording projects caught in different times in their evolution."
+Brian Eno:A Year With Swollen Appendices (25th anniversary edition):book-ayearwithswollenappendices.jpg::"This year in the life of provocateur and cerebral rock star Brian Eno covers four recording projects caught in different times in their evolution."
+//Unknown:Unknown Title:book-3d461b9b4503001603bea72bfc12ce01_MD5.jpg::
+//Unknown:Unknown Title:book-41D17wx2+oL._SL500_.jpg::
+//Unknown:Unknown Title:book-41oAJD97RGL._SL500_.jpg::
+//Unknown:Unknown Title:book-63db6eb5de4e1fb00abc34fa867a9f1f_MD5.png::
+//Unknown:Unknown Title:book-74e23154fef300e1bfd9fbfc71a6c0d5_MD5.jpg::
+//Unknown:Unknown Title:book-91R3cB3kQGL._SL1500_.jpg::
+//Unknown:Unknown Title:book-earthabides.jpg::

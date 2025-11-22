@@ -26,7 +26,7 @@
 	}
 
 	.section {
-		margin-bottom: 40px;
+		margin-bottom: 100px;
 	}
 
 	.section h2 {
@@ -252,12 +252,23 @@
 
 	<div class="section">
 		<h2>Clothes</h2>
-		<p class="placeholder-text">Nice jumpers from Gran Sasso.</p>
+		<div id="clothes-container" class="books-masonry">
+			<p class="placeholder-text">Nice jumpers from Gran Sasso.</p>
+		</div>
 	</div>
 
 	<div class="section">
 		<h2>Toys</h2>
-		<p class="placeholder-text">nothing to see...</p>
+		<div id="toys-container" class="books-masonry">
+			<p class="placeholder-text">nothing to see...</p>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Other</h2>
+		<div id="other-container" class="books-masonry">
+			<p class="placeholder-text">Nothing here yet.</p>
+		</div>
 	</div>
 
     <div class="footer">
@@ -267,42 +278,60 @@
     </div>
 
 	<script>
-	async function loadBooks() {
+	async function loadCategory(category, containerId, dataFile) {
 		try {
-			const response = await fetch('books.txt');
+			const response = await fetch(dataFile);
 			const text = await response.text();
-			
+
 			if (!text.trim()) {
-				document.getElementById('books-container').innerHTML = 
-					'<div class="placeholder-text">No books found in books.txt</div>';
+				// Keep existing placeholder text if file is empty
 				return;
 			}
-			
+
 			const lines = text.trim().split('\n').filter(line => line.trim());
-			const booksContainer = document.getElementById('books-container');
-			
+			const container = document.getElementById(containerId);
+
 			if (lines.length === 0) {
-				booksContainer.innerHTML = '<div class="placeholder-text">No books found</div>';
+				// Keep existing placeholder text if no valid lines
 				return;
 			}
-			
-			booksContainer.innerHTML = '';
-			
+
+			container.innerHTML = '';
+
 			lines.forEach(line => {
-				const book = parseLine(line);
-				if (book) {
-					const bookElement = createBookElement(book);
-					booksContainer.appendChild(bookElement);
+				// Skip commented out lines (starting with //)
+				if (line.trim().startsWith('//')) {
+					return;
+				}
+				const item = parseLine(line);
+				if (item) {
+					const itemElement = createItemElement(item);
+					container.appendChild(itemElement);
 				}
 			});
-			
-			// Initial layout after all books are added
+
+			// Initial layout after all items are added
 			setTimeout(masonryLayout, 50);
 		} catch (error) {
-			console.error('Error loading books:', error);
-			document.getElementById('books-container').innerHTML = 
-				'<div class="placeholder-text">Error loading books.txt</div>';
+			// Keep existing placeholder text if file doesn't exist or error occurs
+			console.log(`No ${category} data file found (${dataFile}) - keeping placeholder text`);
 		}
+	}
+
+	async function loadBooks() {
+		await loadCategory('books', 'books-container', 'books.txt');
+	}
+
+	async function loadClothes() {
+		await loadCategory('clothes', 'clothes-container', 'clothes.txt');
+	}
+
+	async function loadToys() {
+		await loadCategory('toys', 'toys-container', 'toys.txt');
+	}
+
+	async function loadOther() {
+		await loadCategory('other items', 'other-container', 'other.txt');
 	}
 
 	function parseLine(line) {
@@ -349,112 +378,116 @@
 
 
 	function masonryLayout() {
-		const container = document.getElementById('books-container');
-		const items = container.querySelectorAll('.book-item');
-		
-		if (items.length === 0) return;
-		
-		// Get number of columns based on screen size
-		const containerWidth = container.offsetWidth;
-		let columns = 3;
-		if (containerWidth <= 768) columns = 2;
-		if (containerWidth <= 480) columns = 1;
-		
-		const gap = 20;
-		const itemWidth = (containerWidth - (gap * (columns - 1))) / columns;
-		
-		// Initialize column heights
-		const columnHeights = new Array(columns).fill(0);
-		
-		// Position each item
-		items.forEach((item, index) => {
-			// Find the shortest column
-			const shortestColumn = columnHeights.indexOf(Math.min(...columnHeights));
-			
-			// Calculate position
-			const x = shortestColumn * (itemWidth + gap);
-			const y = columnHeights[shortestColumn];
-			
-			// Set item position and width
-			item.style.left = x + 'px';
-			item.style.top = y + 'px';
-			item.style.width = itemWidth + 'px';
-			
-			// Update column height
-			columnHeights[shortestColumn] += item.offsetHeight + gap;
+		// Layout all masonry containers
+		const containers = document.querySelectorAll('.books-masonry');
+
+		containers.forEach(container => {
+			const items = container.querySelectorAll('.book-item');
+
+			if (items.length === 0) return;
+
+			// Get number of columns based on screen size
+			const containerWidth = container.offsetWidth;
+			let columns = 3;
+			if (containerWidth <= 768) columns = 2;
+			if (containerWidth <= 480) columns = 1;
+
+			const gap = 20;
+			const itemWidth = (containerWidth - (gap * (columns - 1))) / columns;
+
+			// Initialize column heights
+			const columnHeights = new Array(columns).fill(0);
+
+			// Position each item
+			items.forEach((item, index) => {
+				// Find the shortest column
+				const shortestColumn = columnHeights.indexOf(Math.min(...columnHeights));
+
+				// Calculate position
+				const x = shortestColumn * (itemWidth + gap);
+				const y = columnHeights[shortestColumn];
+
+				// Set item position and width
+				item.style.left = x + 'px';
+				item.style.top = y + 'px';
+				item.style.width = itemWidth + 'px';
+
+				// Update column height
+				columnHeights[shortestColumn] += item.offsetHeight + gap;
+			});
+
+			// Set container height
+			const maxHeight = Math.max(...columnHeights);
+			container.style.height = maxHeight + 'px';
 		});
-		
-		// Set container height
-		const maxHeight = Math.max(...columnHeights);
-		container.style.height = maxHeight + 'px';
 	}
 
-	function createBookElement(book) {
-		const bookItem = document.createElement('div');
-		bookItem.className = 'book-item';
-		
+	function createItemElement(item) {
+		const itemDiv = document.createElement('div');
+		itemDiv.className = 'book-item';
+
 		const img = document.createElement('img');
-		img.src = `images/${book.image}`;
-		img.alt = `${book.title} by ${book.author}`;
+		img.src = `images/${item.image}`;
+		img.alt = `${item.title} by ${item.author}`;
 		img.className = 'book-cover';
-		
+
 		img.onerror = function() {
 			this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDEyMCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTgwIiBmaWxsPSIjZjBmMGYwIiBzdHJva2U9IiNjY2MiLz4KPHRleHQgeD0iNjAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==';
 		};
-		
+
 		// Wait for image to load before calculating layout
 		img.onload = function() {
 			setTimeout(masonryLayout, 10);
 		};
-		
+
 		const tooltip = document.createElement('div');
 		tooltip.className = 'book-tooltip';
-		tooltip.innerHTML = `<strong>${book.title}</strong><br>by ${book.author}`;
-		
+		tooltip.innerHTML = `${item.author}<br><strong>${item.title}</strong>`;
+
 		// Position tooltip on hover
 		function updateTooltipPosition() {
-			const rect = bookItem.getBoundingClientRect();
-			
+			const rect = itemDiv.getBoundingClientRect();
+
 			// Estimate tooltip width based on text content
 			// Average character width in 14px font is about 8px, plus padding
-			const textContent = book.title + ' by ' + book.author;
+			const textContent = item.title + ' by ' + item.author;
 			const estimatedWidth = Math.min(Math.max(textContent.length * 7 + 24, 200), 300);
-			
-			// Calculate horizontal position (centered on book, accounting for tooltip width)
+
+			// Calculate horizontal position (centered on item, accounting for tooltip width)
 			let left = rect.left + rect.width / 2 - estimatedWidth / 2;
-			
+
 			// Ensure tooltip doesn't go off screen
 			const viewportWidth = window.innerWidth;
-			
+
 			// Adjust if too far left
 			if (left < 10) {
 				left = 10;
 			}
-			// Adjust if too far right  
+			// Adjust if too far right
 			else if (left + estimatedWidth > viewportWidth - 10) {
 				left = viewportWidth - estimatedWidth - 10;
 			}
-			
+
 			tooltip.style.left = left + 'px';
 			tooltip.style.top = (rect.bottom + 10) + 'px';
 		}
-		
+
 		let scrollHandler = null;
 		let scrollTimeout = null;
-		
+
 		if (!isTouchDevice) {
 			// On desktop, use normal hover behavior
-			bookItem.addEventListener('mouseenter', (e) => {
+			itemDiv.addEventListener('mouseenter', (e) => {
 				updateTooltipPosition();
-				
+
 				// Follow smoothly on scroll
 				scrollHandler = () => {
 					updateTooltipPosition();
 				};
 				window.addEventListener('scroll', scrollHandler, { passive: true });
 			});
-			
-			bookItem.addEventListener('mouseleave', (e) => {
+
+			itemDiv.addEventListener('mouseleave', (e) => {
 				// Remove scroll listener
 				if (scrollHandler) {
 					window.removeEventListener('scroll', scrollHandler);
@@ -462,18 +495,18 @@
 				}
 			});
 		}
-		
-		bookItem.appendChild(img);
-		bookItem.appendChild(tooltip);
-		
+
+		itemDiv.appendChild(img);
+		itemDiv.appendChild(tooltip);
+
 		// Add click handler for overlay (always, regardless of URL)
-		bookItem.addEventListener('click', (e) => {
+		itemDiv.addEventListener('click', (e) => {
 			e.preventDefault();
-			showBookOverlay(book);
+			showItemOverlay(item);
 		});
-		bookItem.style.cursor = 'pointer';
-		
-		return bookItem;
+		itemDiv.style.cursor = 'pointer';
+
+		return itemDiv;
 	}
 
 	// Detect touch devices
@@ -502,36 +535,36 @@
 	`;
 	document.body.appendChild(overlay);
 	
-	// Show book overlay
-	function showBookOverlay(book) {
+	// Show item overlay
+	function showItemOverlay(item) {
 		const title = overlay.querySelector('.book-overlay-title');
 		const author = overlay.querySelector('.book-overlay-author');
 		const note = overlay.querySelector('.book-overlay-note');
 		const link = overlay.querySelector('.book-overlay-link');
-		
-		title.textContent = book.title;
-		author.textContent = `by ${book.author}`;
-		
-		if (book.note) {
-			note.textContent = book.note;
+
+		title.textContent = item.title;
+		author.textContent = item.author;
+
+		if (item.note) {
+			note.textContent = item.note;
 			note.style.display = 'block';
 		} else {
 			note.style.display = 'none';
 		}
-		
-		if (book.url && book.url.trim()) {
-			link.href = book.url;
+
+		if (item.url && item.url.trim()) {
+			link.href = item.url;
 			link.style.display = 'inline-flex';
 		} else {
 			link.style.display = 'none';
 		}
-		
+
 		overlay.classList.add('show');
 		document.body.style.overflow = 'hidden'; // Prevent background scrolling
 	}
-	
-	// Hide book overlay
-	function hideBookOverlay() {
+
+	// Hide item overlay
+	function hideItemOverlay() {
 		overlay.classList.remove('show');
 		document.body.style.overflow = ''; // Restore scrolling
 	}
@@ -539,23 +572,28 @@
 	// Close overlay on background click
 	overlay.addEventListener('click', (e) => {
 		if (e.target === overlay) {
-			hideBookOverlay();
+			hideItemOverlay();
 		}
 	});
-	
+
 	// Close overlay on X button click
-	overlay.querySelector('.book-overlay-close').addEventListener('click', hideBookOverlay);
-	
+	overlay.querySelector('.book-overlay-close').addEventListener('click', hideItemOverlay);
+
 	// Close overlay on Escape key
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape' && overlay.classList.contains('show')) {
-			hideBookOverlay();
+			hideItemOverlay();
 		}
 	});
 	
 
-	// Load books when page loads
-	document.addEventListener('DOMContentLoaded', loadBooks);
+	// Load all categories when page loads
+	document.addEventListener('DOMContentLoaded', () => {
+		loadBooks();
+		loadClothes();
+		loadToys();
+		loadOther();
+	});
 	
 	// Recalculate layout on window resize
 	window.addEventListener('resize', () => {
