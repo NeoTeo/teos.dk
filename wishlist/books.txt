@@ -26,3 +26,4 @@ Virgil, Peter Fallon:Georgics:book-virgil_georgics.jpeg.png::
 W. David Marx:Blank Space:book-blankspace.jpeg::
 Georg Christoph Lichtenberg:The Waste Books:book-9780940322509.jpeg::
 Toshio Odate:Japanese Woodworking Tools:book-JapanenseWoodworkingTools.jpg::
+Lynda Barry:"Syllabus: Notes From an Accidental Professor":book-SyllabusLyndaBarry.jpg::
