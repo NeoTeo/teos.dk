@@ -177,18 +177,16 @@
 	<h1>Projects instigated by me but written by AI</h1>
 	<hr>
 
-	<!-- ARSS Project -->
+	<!-- Arss Project -->
 	<div class="project">
 		<div class="project-image" onclick="openLightbox('arss', 0)">
-			<img src="images/arss_1_list.png" alt="ARSS RSS Reader">
+			<img src="images/arss_1_list.png" alt="Arss">
 			<div class="image-count">5</div>
 		</div>
 		<div class="project-content">
 			<h2>arss</h2>
 			<p>
-				An RSS reader that takes an OPML xml file of feeds (exported from eg. Inoreader) and creates an HTML page that lists all the articles in temporal order.
-				If the Claude API token is provided it will, by default, group disparate posts with semantically similar content (group samey posts).
-				It will also read the prompts.txt file which can direct further consideration of the posts. As an example it can silence (group under a collapsed header) posts that instigate unprompted consumerism (ads). The script is run periodically and can be set to range a variety of time spans.
+			An RSS reader that takes an OPML xml file of feeds (exported from eg. Inoreader) and creates an HTML page that lists all the articles in temporal order. If the Claude API token is provided it will, by default, group disparate posts with semantically similar content (group samey posts). It will also read the prompts.txt file which can direct further consideration of the posts. As an example it can silence (group under a collapsed header) posts that instigate unprompted consumerism (ads). The script is run periodically and can be set to range a variety of time spans.
 			</p>
 		</div>
 	</div>
@@ -196,13 +194,13 @@
 	<!-- Neggo Project -->
 	<div class="project">
 		<div class="project-image" onclick="openLightbox('neggo', 0)">
-			<img src="images/neggo_1_panel.png" alt="Neggo Film Negative Inverter">
+			<img src="images/neggo_1_panel.png" alt="Neggo">
 			<div class="image-count">3</div>
 		</div>
 		<div class="project-content">
 			<h2>neggo</h2>
 			<p>
-				A scanned film negative inverter that allows adjustment of the resulting positive.
+			A scanned film negative inverter that allows adjustment of the resulting positive.
 			</p>
 		</div>
 	</div>
@@ -215,8 +213,7 @@
 		<div class="project-content">
 			<h2>timelines</h2>
 			<p>
-				This script creates an HTML page that takes simply formatted .md files (date and description) and shows them as vertical timelines in columns.
-				This juxtaposition allows them to be compared and clicking a date aligns them horizontally on common dates. It is possible, by clicking the edges, to collapse long timeline sections to get a more compact overview of a timeline.
+			This script creates an HTML page that takes simply formatted .md files (date and description) and shows them as vertical timelines in columns. This juxtaposition allows them to be compared and clicking a date aligns them horizontally on common dates. It is possible, by clicking the edges, to collapse long timeline sections to get a more compact overview of a timeline.
 			</p>
 		</div>
 	</div>
@@ -230,13 +227,24 @@
 		<div class="project-content">
 			<h2>ulysquot</h2>
 			<p>
-			Scratching a very personal itch, this web application (and a Playdate version) contains the entirety of Gabler's A Critical and Synoptic Edition of James Joyce's Ulysses and makes it easy to jump to a specific episode and line therein. 
-			A text search mode makes the reverse possible: finding the section and line of a particular word or passage, useful for looking up commentary in Ulysses Annotated (or any other reference that uses the Gabler index system).
-			A recent addition is the edition page converter which will, thanks to the data from <a href="https://www.james-joyce.de/ulysses/essays">this site</a>, let you find the (sometimes approximate) equivalent in a different edition.
+			Scratching a very personal itch, this web application (and a Playdate version) contains the entirety of Gabler's A Critical and Synoptic Edition of James Joyce's Ulysses and makes it easy to jump to a specific episode and line therein. A text search mode makes the reverse possible: finding the section and line of a particular word or passage, useful for looking up commentary in Ulysses Annotated (or any other reference that uses the Gabler index system). A recent addition is the edition page converter which will, thanks to the data from <a href="https://www.james-joyce.de/ulysses/essays">this site</a>, let you find the (sometimes approximate) equivalent in a different edition.
 			</p>
 		</div>
 	</div>
 
+	<!-- Tabemas Project -->
+	<div class="project">
+		<div class="project-image" onclick="openLightbox('tabemas', 0)">
+			<img src="images/tabemas_1.png" alt="Tabemas">
+			<div class="image-count">2</div>
+		</div>
+		<div class="project-content">
+			<h2>tabemas</h2>
+			<p>
+			A Safari extension that tracks open tabs as well as tab history and sorts either by time added or by alphabetical order (with toggles to reverse). It also provides type-to-search of both titles and url.
+			</p>
+		</div>
+	</div>
 	<!-- Lightbox Modal -->
 	<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
 		<button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
@@ -284,6 +292,10 @@
 				'images/ulysquotC00006.png',
 				'images/ulysquotC00007.png',
 				'images/ulysquotC00008.png'
+			],
+			'tabemas': [
+				'images/tabemas_1.png',
+				'images/tabemas_2_history.png'
 			]
 		};
 
