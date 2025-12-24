@@ -12,3 +12,6 @@ This juxtapositon allows them to be compared and clicking a date aligns them hor
 
 # ulysquot
 Scratching a very personal itch, this web application (and a Playdate version) contains the entirety of Gabler's A Critical and Synoptic Edition of James Joyce's Ulysses and makes it easy to jump to a specific episode and line therein. A text search mode makes the reverse possible: finding the section and line of a particular word or passage, useful for looking up commentary in Ulysses Annotated (or any other reference that uses the Gabler index system).
+
+# tabemas
+A Safari extension that tracks open tabs as well as tab history and sorts either by time added or by alphabetical order (with toggles to reverse). It also provides type-to-search of both titles and url.
