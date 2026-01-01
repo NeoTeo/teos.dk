@@ -180,23 +180,70 @@ function generateProgressBar(progress) {
   return progressBar;
 }
 
+// Function to check if a year section exists and create it if needed
+async function ensureCurrentYearSection(htmlContent, currentYear) {
+  const yearPattern = new RegExp(`<b>${currentYear}</b><br>`);
+
+  if (yearPattern.test(htmlContent)) {
+    // Year section already exists
+    return htmlContent;
+  }
+
+  console.log(`Creating new section for year ${currentYear}...`);
+
+  // Find and extract the in-progress section
+  const inProgressSectionPattern = /(\t<p>\s*<i>in progress<\/i><br>[\s\S]*?<\/p>)\s*/;
+  const inProgressMatch = htmlContent.match(inProgressSectionPattern);
+
+  let inProgressSection = '';
+  let contentWithoutInProgress = htmlContent;
+
+  if (inProgressMatch) {
+    inProgressSection = inProgressMatch[1];
+    // Remove the in-progress section from its current location
+    contentWithoutInProgress = htmlContent.replace(inProgressSectionPattern, '');
+  }
+
+  // Find the first year section (look for <p>\n followed by <b>YEAR</b>)
+  // We need to insert the new year before the existing first year
+  const firstYearPattern = /<p>\s*<b>(\d{4})<\/b><br>/;
+  const match = contentWithoutInProgress.match(firstYearPattern);
+
+  if (match) {
+    // Create new year section, then in-progress, then the previous year
+    const newYearSection = `<p>\n\t<b>${currentYear}</b><br>\n</p>\n${inProgressSection}\n\t`;
+    const updatedContent = contentWithoutInProgress.replace(
+      firstYearPattern,
+      newYearSection + match[0]
+    );
+    return updatedContent;
+  }
+
+  // If no year section found, we can't add one safely
+  console.warn('Could not find existing year section to insert new year before');
+  return htmlContent;
+}
+
 // Function to handle completed books
 async function handleCompletedBooks(completedEntries) {
   if (completedEntries.length === 0) return 0;
-  
+
   const fs = require('fs').promises;
   const path = require('path');
-  
+
   // Read the readingprogress.md file to remove completed books
   const mdContent = await fs.readFile('readingprogress.md', 'utf8');
   let updatedMdContent = mdContent;
-  
+
   // Read the main readindex.html to add completed books
-  const readIndexContent = await fs.readFile('readindex.html', 'utf8');
-  let updatedReadIndexContent = readIndexContent;
-  
+  let readIndexContent = await fs.readFile('readindex.html', 'utf8');
+
   // Get current year
   const currentYear = new Date().getFullYear();
+
+  // Ensure current year section exists before adding completed books
+  readIndexContent = await ensureCurrentYearSection(readIndexContent, currentYear);
+  let updatedReadIndexContent = readIndexContent;
   
   for (const completedBook of completedEntries) {
     // Remove from readingprogress.md
@@ -261,8 +308,18 @@ async function updateReadingProgress() {
   try {
     // Read the files
     const fs = require('fs').promises;
-    const htmlFile = await fs.readFile('readindex.html', 'utf8');
+    let htmlFile = await fs.readFile('readindex.html', 'utf8');
     const mdFile = await fs.readFile('readingprogress.md', 'utf8');
+
+    // Ensure current year section exists (handles new year transitions)
+    const currentYear = new Date().getFullYear();
+    const originalHtml = htmlFile;
+    htmlFile = await ensureCurrentYearSection(htmlFile, currentYear);
+
+    // If the year section was created, save immediately
+    if (htmlFile !== originalHtml) {
+      await fs.writeFile('readindex.html', htmlFile);
+    }
 
     // Parse the MD file
     const mdLines = mdFile.trim().split('\n').filter(line => line.trim() !== '');
