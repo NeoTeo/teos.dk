@@ -28,3 +28,5 @@ Georg Christoph Lichtenberg:The Waste Books:book-9780940322509.jpeg::
 Toshio Odate:Japanese Woodworking Tools:book-JapanenseWoodworkingTools.jpg::
 Lynda Barry:"Syllabus: Notes From an Accidental Professor":book-SyllabusLyndaBarry.jpg::
 Charles Portis:Portis Collected Works:book-PortisCollectedWorks.jpg::"Collection of the works of Charles Portis"
+Jeff Bridges:Pictures:book-bridges.png::"A photography book by Jeff Bridges taken with his beloved Widelux F8 camera."
+C. Thi Nguyen:The Score:book-thescorenguyen.jpeg::"'a brilliant warning about the gamification of everyday life'"
