@@ -30,3 +30,4 @@ Lynda Barry:"Syllabus: Notes From an Accidental Professor":book-SyllabusLyndaBar
 Charles Portis:Portis Collected Works:book-PortisCollectedWorks.jpg::"Collection of the works of Charles Portis"
 Jeff Bridges:Pictures:book-bridges.png::"A photography book by Jeff Bridges taken with his beloved Widelux F8 camera."
 C. Thi Nguyen:The Score:book-thescorenguyen.jpeg::"'a brilliant warning about the gamification of everyday life'"
+Michel de Montaigne:The Complete Essays:book-montaignecompleteessays.jpg::"The Essays are among the most idiosyncratic and personal works in all literature and provide an engaging insight into a wise Renaissance mind, continuing to give pleasure and enlightenment to modern readers."
