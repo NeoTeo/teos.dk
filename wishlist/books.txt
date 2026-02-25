@@ -1,3 +1,4 @@
+Stewart Brand:"Maintenance: Of Everything":book-stewartbrandmaintenance.jpg::"Maintenance is what keeps everything going. It’s what keeps life going. Yet it’s also easy to shirk or defer—until the thing breaks, the system falters, and everything stops. The apparent paradox is profound: Maintenance is absolutely necessary and maintenance is optional."
 Seneca:Letters on Ethics\: To Lucilius:book-63852200.webp:"https://bookbot.com/g/515507":"A modern translation of Seneca's letters from a Stoic by Anthony Arthur Long and Margaret Graver"
 Robert D. Richardson:First We Read, Then We Write:book-19289b5b9b3e0549017027532b3331d1_MD5.png:"https://www.saxo.com/dk/first-we-read-then-we-write_robert-d-richardson_paperback_9781609383473":"A guide to developing reading and writing habits from a biographical master."
 Kenya Hara:Designing Design:book-2034402-1916964549.jpg::"Elegant exploration of design philosophy from the creative director of Muji."
@@ -31,3 +32,5 @@ Charles Portis:Portis Collected Works:book-PortisCollectedWorks.jpg::"Collection
 Jeff Bridges:Pictures:book-bridges.png::"A photography book by Jeff Bridges taken with his beloved Widelux F8 camera."
 C. Thi Nguyen:The Score:book-thescorenguyen.jpeg::"'a brilliant warning about the gamification of everyday life'"
 Michel de Montaigne:The Complete Essays:book-montaignecompleteessays.jpg::"The Essays are among the most idiosyncratic and personal works in all literature and provide an engaging insight into a wise Renaissance mind, continuing to give pleasure and enlightenment to modern readers."
+Robert Pirsig:Zen and the Art of Maintenance:book-pirsigzenandartofmaintenance.jpg::"The 50th anniversary of the classic philosophy book"
+Austin Kleon:Don't Call It Art:book-kleondontcallitart.webp::"Austin Kleon's fourth book in his popular trilogy"
