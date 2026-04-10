@@ -84,36 +84,30 @@
 
 </p>
 	<p>
-	<i>in progress</i><br>
+	<i>in progress</i><br><div class="row" data-pagecount="103" data-currentpage="2">
+<div class="author">Carlo M. Cipolla, Faith, Reason, and the Plague</div>
+<div class="progress">I*---------I</div></div>
 
-
-
-<div class="row" data-isbn="9780385720250" data-pagecount="732">
+<div class="row" data-isbn="9780385720250" data-pagecount="732" data-currentpage="56">
 <div class="author">Sylvia Plath, The Unabridged Journals of Sylvia Plath</div>
 <div class="progress">I*---------I</div></div>
 
-
-
-
-
-
-
-<div class="row" data-isbn="9780670919468" data-pagecount="415">
+<div class="row" data-isbn="9780670919468" data-pagecount="415" data-currentpage="155">
 <div class="author">Hugh Aldersley-Williams, Periodic Tales</div>
 <div class="progress">I---*------I</div></div>
 
 
-<div class="row" data-pagecount="399">
+<div class="row" data-pagecount="399" data-currentpage="37">
 <div class="author">Robert Bringhurst, The Elements of Typographic Style</div>
 <div class="progress">I*---------I</div></div>
 
 
-<div class="row" data-pagecount="979">
+<div class="row" data-pagecount="979" data-currentpage="505">
 <div class="author">Ray Bradbury, The Illustrated Man</div>
 <div class="progress">I-----*----I</div></div>
 
 	
-	<div class="row" data-isbn="9780374157357" data-pagecount="704">
+	<div class="row" data-isbn="9780374157357" data-pagecount="704" data-currentpage="249">
 <div class="author">David Graeber & David Wengrow, The Dawn of Everything</div>
 <div class="progress">I---*------I</div></div>
 	<br><br>
@@ -200,6 +194,13 @@
 					// Position to the left of the element
 					tooltip.style.left = (rect.left + window.scrollX - tooltip.offsetWidth - 10) + 'px';
 					tooltip.style.top = (rect.top + window.scrollY) + 'px';
+				} else if (position === 'right') {
+					// Position to the right of the text content
+					const range = document.createRange();
+					range.selectNodeContents(element);
+					const textRect = range.getBoundingClientRect();
+					tooltip.style.left = (textRect.right + window.scrollX + 10) + 'px';
+					tooltip.style.top = (rect.top + window.scrollY) + 'px';
 				} else {
 					// Position below the element (default)
 					tooltip.style.left = (rect.left + window.scrollX) + 'px';
@@ -252,6 +253,22 @@
 					});
 
 					element.addEventListener('mouseleave', hideTooltip);
+				});
+
+				// Progress bar tooltips
+				const progressBars = document.querySelectorAll('.row .progress');
+				progressBars.forEach(bar => {
+					bar.style.cursor = 'help';
+					bar.addEventListener('mouseenter', function(e) {
+						const row = this.closest('.row');
+						const currentPage = row.getAttribute('data-currentpage');
+						const pageCount = row.getAttribute('data-pagecount');
+						if (currentPage && pageCount) {
+							const pct = Math.round((parseInt(currentPage) / parseInt(pageCount)) * 100);
+							showTooltip(this, `${currentPage} of ${pageCount} pages (${pct}%)`, 'right');
+						}
+					});
+					bar.addEventListener('mouseleave', hideTooltip);
 				});
 
 				// Year header tooltips

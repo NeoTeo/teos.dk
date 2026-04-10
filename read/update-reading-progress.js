@@ -91,7 +91,7 @@ function extractExistingEntries(html) {
   const inProgressSection = html.substring(inProgressIndex, endIndex);
 
   // Extract all row entries - updated to capture data-isbn and data-pagecount
-  const rowPattern = /<div class="row"(?:\s+data-isbn="([^"]*)")?(?:\s+data-pagecount="([^"]*)")?>[\s\S]*?<div class="author">(.*?)<\/div>[\s\S]*?<div class="progress">(.*?)<\/div><\/div>/g;
+  const rowPattern = /<div class="row"(?:\s+data-isbn="([^"]*)")?(?:\s+data-pagecount="([^"]*)")?(?:\s+data-currentpage="([^"]*)")?>[\s\S]*?<div class="author">(.*?)<\/div>[\s\S]*?<div class="progress">(.*?)<\/div><\/div>/g;
 
   const existingEntries = [];
   let rowMatch;
@@ -99,8 +99,9 @@ function extractExistingEntries(html) {
   while ((rowMatch = rowPattern.exec(inProgressSection)) !== null) {
     const isbn = normalizeIsbn(rowMatch[1] || '');
     const pageCount = rowMatch[2] ? parseInt(rowMatch[2]) : null;
-    const fullAuthorTitle = rowMatch[3].trim();
-    const progressBar = rowMatch[4].trim();
+    const currentPage = rowMatch[3] ? parseInt(rowMatch[3]) : null;
+    const fullAuthorTitle = rowMatch[4].trim();
+    const progressBar = rowMatch[5].trim();
 
     // Parse author and title
     const lastCommaIndex = fullAuthorTitle.lastIndexOf(', ');
@@ -117,6 +118,7 @@ function extractExistingEntries(html) {
         title,
         progress,
         pageCount,
+        currentPage,
         isbn,
         fullMatch: rowMatch[0],
         authorTitleText: fullAuthorTitle
@@ -140,7 +142,7 @@ function determineChanges(mdEntries, existingEntries) {
   mdEntries.forEach(mdEntry => {
     // Find if this entry already exists
     const existingEntry = existingEntries.find(entry =>
-      entry.author === mdEntry.author && entry.title === mdEntry.title
+      entry.authorTitleText === `${mdEntry.author}, ${mdEntry.title}`
     );
 
     if (mdEntry.isCompleted) {
@@ -153,8 +155,8 @@ function determineChanges(mdEntries, existingEntries) {
     } else if (!existingEntry) {
       // New entry to add
       entriesToAdd.push(mdEntry);
-    } else if (existingEntry.progress !== mdEntry.progress || existingEntry.pageCount !== mdEntry.totalPages) {
-      // Entry exists but progress or page count changed
+    } else if (existingEntry.progress !== mdEntry.progress || existingEntry.pageCount !== mdEntry.totalPages || existingEntry.currentPage !== mdEntry.currentPage) {
+      // Entry exists but progress, page count, or current page changed
       entriesToUpdate.push({
         ...mdEntry,
         isbn: existingEntry.isbn,
@@ -367,7 +369,8 @@ async function updateReadingProgress() {
       const normalizedIsbn = normalizeIsbn(entry.isbn);
       const isbnAttr = normalizedIsbn ? ` data-isbn="${normalizedIsbn}"` : '';
       const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
-      const newRowHtml = `<div class="row"${isbnAttr}${pageCountAttr}>
+      const currentPageAttr = ` data-currentpage="${entry.currentPage}"`;
+      const newRowHtml = `<div class="row"${isbnAttr}${pageCountAttr}${currentPageAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
 <div class="progress">${newProgressBar}</div></div>`;
 
@@ -380,7 +383,8 @@ async function updateReadingProgress() {
       entriesToAdd.forEach(entry => {
         const progressBar = generateProgressBar(entry.progress);
         const pageCountAttr = ` data-pagecount="${entry.totalPages}"`;
-        newEntriesHtml += `<div class="row" data-isbn=""${pageCountAttr}>
+        const currentPageAttr = ` data-currentpage="${entry.currentPage}"`;
+        newEntriesHtml += `<div class="row" data-isbn=""${pageCountAttr}${currentPageAttr}>
 <div class="author">${entry.author}, ${entry.title}</div>
 <div class="progress">${progressBar}</div></div>
 `;
