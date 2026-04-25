@@ -20,7 +20,7 @@ for image in "$IMAGES_DIR"/*; do
     filename=$(basename "$image")
     [ "$filename" = ".DS_Store" ] && continue
 
-    # Determine the category based on prefix
+    # Determine the category based on prefix.
     category=""
     target_file=""
 
@@ -34,10 +34,9 @@ for image in "$IMAGES_DIR"/*; do
         category="toys"
         target_file="$TOYS_FILE"
     else
-        # No recognized prefix, assume "other"
+        # No recognized prefix, assume "other".
         category="other"
         target_file="$OTHER_FILE"
-        # Rename the file to have other- prefix if it doesn't have any recognized prefix
         if [[ ! "$filename" == other-* ]]; then
             new_filename="other-$filename"
             mv "$image" "$IMAGES_DIR/$new_filename"
@@ -46,19 +45,54 @@ for image in "$IMAGES_DIR"/*; do
         fi
     fi
 
-    # Check if this image is already in the target file
+    # Skip if this image is already in the target file.
     if grep -q ":$filename:" "$target_file" 2>/dev/null; then
         echo "Skipping $filename - already in $target_file"
         continue
     fi
 
-    # Add the image to the appropriate file with a placeholder format
-    # Format for books: Author:Title:filename:url:note
-    # Format for others: Brand:Model:filename:url:note
     if [ "$category" = "book" ]; then
-        echo "Unknown:Unknown Title:$filename::" >> "$target_file"
-        echo "Added $filename to $target_file (category: $category)"
-        echo "  → Please edit $target_file to add proper author, title, URL, and notes"
+        if extractor_out=$(./extract-book-metadata.sh "$image" 2>>extract.log); then
+            # Parse the three lines into AUTHOR / TITLE / BLURB values + statuses.
+            author_raw=""; title_raw=""; blurb_raw=""
+            a_status="ok"; t_status="ok"; b_status="ok"
+            while IFS= read -r line; do
+                case "$line" in
+                    "AUTHOR:OK:"*)      author_raw=${line#AUTHOR:OK:} ;;
+                    "AUTHOR:MISSING:"*) a_status="NOT EXTRACTED" ;;
+                    "TITLE:OK:"*)       title_raw=${line#TITLE:OK:} ;;
+                    "TITLE:MISSING:"*)  t_status="NOT EXTRACTED" ;;
+                    "BLURB:OK:"*)       blurb_raw=${line#BLURB:OK:} ;;
+                    "BLURB:MISSING:"*)  b_status="NOT EXTRACTED" ;;
+                esac
+            done <<< "$extractor_out"
+
+            # Apply placeholders for MISSING fields.
+            [ "$a_status" = "ok" ] || author_raw="Unknown"
+            [ "$t_status" = "ok" ] || title_raw="Unknown Title"
+            # blurb stays empty when MISSING.
+
+            # Quoting rule: wrap a non-empty value in "..." iff it contains : or ,
+            quote_field() {
+                local v=$1
+                if [ -z "$v" ]; then
+                    printf ''
+                elif [[ "$v" == *:* || "$v" == *,* ]]; then
+                    printf '"%s"' "$v"
+                else
+                    printf '%s' "$v"
+                fi
+            }
+            author_field=$(quote_field "$author_raw")
+            title_field=$(quote_field "$title_raw")
+            blurb_field=$(quote_field "$blurb_raw")
+
+            echo "${author_field}:${title_field}:${filename}::${blurb_field}" >> "$target_file"
+            echo "$filename: author=${a_status}, title=${t_status}, blurb=${b_status}"
+        else
+            echo "Unknown:Unknown Title:${filename}::" >> "$target_file"
+            echo "$filename: extraction failed (see extract.log) — wrote placeholder"
+        fi
     else
         echo "Unknown Brand:Unknown Model:$filename::" >> "$target_file"
         echo "Added $filename to $target_file (category: $category)"

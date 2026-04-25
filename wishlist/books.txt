@@ -33,3 +33,6 @@ C. Thi Nguyen:The Score:book-thescorenguyen.jpeg::"'a brilliant warning about th
 Michel de Montaigne:The Complete Essays:book-montaignecompleteessays.jpg::"The Essays are among the most idiosyncratic and personal works in all literature and provide an engaging insight into a wise Renaissance mind, continuing to give pleasure and enlightenment to modern readers."
 Robert Pirsig:Zen and the Art of Maintenance:book-pirsigzenandartofmaintenance.jpg::"The 50th anniversary of the classic philosophy book"
 Austin Kleon:Don't Call It Art:book-kleondontcallitart.webp::"Austin Kleon's fourth book in his popular trilogy"
+Ada Palmer:"Inventing the Renaissance: The Myth of a Golden Age":book-palmerinventingtherenaissance.jpg::"Historian Ada Palmer dismantles the myth of the Renaissance as a glorious golden age, revealing a turbulent era of crisis, conflict, and reinvention."
+William Shatner with Joshua Brandon:"Boldly Go: Reflections on a Life of Awe and Wonder":book-shatnerboldlygo.jpg::"Shatner's memoir reflecting on his career, space travel, and the wonder he finds in life and the universe."
+John R. Stilgoe:"Outside Lies Magic: Regaining History and Awareness in Everyday Places":book-StilgoeOutsideLiesMagicjpg.jpg::Stilgoe lets you in on a really cool secret as he teases out the hidden meanings behind often overlooked features of our cities and towns.
