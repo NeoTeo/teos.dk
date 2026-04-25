@@ -46,7 +46,16 @@ This will:
 
 ### 3. Edit the Data File
 
-Open the appropriate .txt file and update the placeholder entry:
+Open the appropriate .txt file and update the placeholder entry.
+
+For book images, the script will have already attempted to fill in
+author, title, and blurb using the local `claude` CLI. Check the
+per-image summary printed by the script — any field marked
+`NOT EXTRACTED` (or the whole row marked `extraction failed`) needs
+manual fix-up. URL is always left empty by the auto-extractor.
+
+For clothes / toys / other images, the row is always a placeholder
+that needs manual editing.
 
 **For books (books.txt):**
 ```
@@ -95,6 +104,35 @@ Kenya Hara:Designing Design:book-design.jpg:https://example.com/book:Design phil
 ```
 Kenya Hara:Designing Design:book-design.jpg::Design philosophy from Muji.
 ```
+
+## Book Metadata Extraction
+
+When a `book-*` image is added, `add-images.sh` calls
+`extract-book-metadata.sh` to populate author, title, and a one-sentence
+blurb automatically.
+
+Requirements:
+- The `claude` CLI must be on `PATH`.
+
+Per-image output:
+- `book-foo.jpg: author=ok, title=ok, blurb=ok` — all three fields filled.
+- `book-foo.jpg: author=ok, title=ok, blurb=NOT EXTRACTED` — the marked
+  field needs manual fix-up. The row is still written with sensible
+  placeholders (`Unknown` / `Unknown Title` / empty blurb).
+- `book-foo.jpg: extraction failed (see extract.log) — wrote placeholder` —
+  the extractor could not run at all (e.g., `claude` not on `PATH`,
+  network failure, malformed model response). The full
+  `Unknown:Unknown Title:filename::` placeholder is written. Stderr from
+  the failed call is appended to `wishlist/extract.log`.
+
+Run the extractor manually on a single image to test:
+
+```
+./extract-book-metadata.sh images/book-shatnerboldlygo.jpg
+```
+
+It prints exactly three lines (AUTHOR / TITLE / BLURB) and exits 0 on
+success.
 
 ## Hiding Items
 
