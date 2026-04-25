@@ -45,9 +45,18 @@ Rules:
 - Values must be on one line. No quotes, no newlines, no leading or trailing whitespace.'
 
 # Send the prompt with an @-mention of the image. Claude Code reads the
-# file referenced by @<path> and includes it as image input.
-raw=$(claude -p "${PROMPT} @${image_path}" 2>/dev/null) || {
-    echo "extract-book-metadata: claude invocation failed" >&2
+# file referenced by @<path> and includes it as image input. Capture
+# claude's stderr so we can surface it on failure.
+claude_err=$(mktemp)
+trap 'rm -f "$claude_err"' EXIT
+raw=$(claude -p "${PROMPT} @${image_path}" 2>"$claude_err") || {
+    {
+        echo "extract-book-metadata: claude invocation failed"
+        if [ -s "$claude_err" ]; then
+            echo "  claude stderr:"
+            sed 's/^/    /' "$claude_err"
+        fi
+    } >&2
     exit 1
 }
 

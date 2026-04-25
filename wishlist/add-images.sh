@@ -13,6 +13,20 @@ OTHER_FILE="other.txt"
 # Create data files if they don't exist
 touch "$CLOTHES_FILE" "$TOYS_FILE" "$OTHER_FILE"
 
+# Wrap a non-empty value in "..." iff it contains : or , so it parses
+# correctly as a single field on the wishlist page. Empty values pass
+# through bare so a missing field renders as "::" in the row.
+quote_field() {
+    local v=$1
+    if [ -z "$v" ]; then
+        printf ''
+    elif [[ "$v" == *:* || "$v" == *,* ]]; then
+        printf '"%s"' "$v"
+    else
+        printf '%s' "$v"
+    fi
+}
+
 # Get all image files from the images directory (excluding .DS_Store)
 for image in "$IMAGES_DIR"/*; do
     # Skip if not a file or is .DS_Store
@@ -72,17 +86,6 @@ for image in "$IMAGES_DIR"/*; do
             [ "$t_status" = "ok" ] || title_raw="Unknown Title"
             # blurb stays empty when MISSING.
 
-            # Quoting rule: wrap a non-empty value in "..." iff it contains : or ,
-            quote_field() {
-                local v=$1
-                if [ -z "$v" ]; then
-                    printf ''
-                elif [[ "$v" == *:* || "$v" == *,* ]]; then
-                    printf '"%s"' "$v"
-                else
-                    printf '%s' "$v"
-                fi
-            }
             author_field=$(quote_field "$author_raw")
             title_field=$(quote_field "$title_raw")
             blurb_field=$(quote_field "$blurb_raw")
