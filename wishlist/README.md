@@ -6,13 +6,15 @@ A dynamic wishlist page that displays categorized items (books, clothes, toys, a
 
 ```
 wishlist/
-├── index.html          # Main wishlist page
-├── add-images.sh       # Script to add new images to categories
-├── books.txt           # Book entries (Author:Title:filename:url:note)
-├── clothes.txt         # Clothing entries (Brand:Model:filename:url:note)
-├── toys.txt           # Toy entries (Brand:Model:filename:url:note)
-├── other.txt          # Other entries (Brand:Model:filename:url:note)
-└── images/            # All item images
+├── index.html                  # Main wishlist page
+├── add-images.sh               # Script to add new images to categories
+├── extract-book-metadata.sh    # Helper that pulls author/title/blurb from a book cover
+├── extract.log                 # Stderr from failed extractor runs (gitignored)
+├── books.txt                   # Book entries (Author:Title:filename:url:note)
+├── clothes.txt                 # Clothing entries (Brand:Model:filename:url:note)
+├── toys.txt                    # Toy entries (Brand:Model:filename:url:note)
+├── other.txt                   # Other entries (Brand:Model:filename:url:note)
+└── images/                     # All item images
     ├── book-*.jpg
     ├── clothes-*.jpg
     ├── toys-*.jpg
@@ -147,11 +149,24 @@ The hidden item won't appear on the page but remains in the file for future reac
 
 ## Special Characters
 
-If your text contains colons (`:`), escape them with a backslash:
+The parser supports two ways of including a field that contains colons
+(`:`) or commas (`,`):
 
-```
-Author Name:Title\: Subtitle:book-example.jpg::Note text here.
-```
+- Wrap the whole field in double quotes:
+
+  ```
+  Author Name:"Title: Subtitle":book-example.jpg::Note text here.
+  ```
+
+- Or backslash-escape the offending character:
+
+  ```
+  Author Name:Title\: Subtitle:book-example.jpg::Note text here.
+  ```
+
+`add-images.sh` writes auto-extracted book rows using the quoted form
+(via its `quote_field` helper), so you'll see `"..."` around any author,
+title, or blurb that the extractor produced containing `:` or `,`.
 
 ## Multi-line Notes
 
