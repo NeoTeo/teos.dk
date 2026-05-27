@@ -5,6 +5,7 @@ function normalizeIsbn(isbn) {
 
 // Function to parse the MD file content
 function parseMdLine(line) {
+  const rawLine = line;
   let result = [];
   let current = "";
   let escaped = false;
@@ -64,7 +65,8 @@ function parseMdLine(line) {
     isCompleted: isCompleted,
     currentPage: currentPage,
     totalPages: totalPages,
-    progressStr: progressStr
+    progressStr: progressStr,
+    rawLine: rawLine
   };
 }
 
@@ -248,8 +250,9 @@ async function handleCompletedBooks(completedEntries) {
   let updatedReadIndexContent = readIndexContent;
   
   for (const completedBook of completedEntries) {
-    // Remove from readingprogress.md
-    const lineToRemove = `${completedBook.author}, ${completedBook.title}, ${completedBook.progressStr}`;
+    // Remove from readingprogress.md using the original raw line so escaped
+    // characters (e.g. \, inside titles) match byte-for-byte.
+    const lineToRemove = completedBook.rawLine;
     updatedMdContent = updatedMdContent.replace(lineToRemove + '\n', '');
     updatedMdContent = updatedMdContent.replace(lineToRemove, '');
     
