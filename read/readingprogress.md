@@ -1,4 +1,4 @@
-Flaubert, Madame Bovary, 82of361
+Flaubert, Madame Bovary, 316of361
 Sylvia Plath, The Unabridged Journals of Sylvia Plath, 56of732
 Robert Bringhurst, The Elements of Typographic Style, 37of399 
 Ray Bradbury, The Illustrated Man,505of979 
