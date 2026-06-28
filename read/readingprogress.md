@@ -1,3 +1,5 @@
+Ursula K. Le Guin, The Dispossessed, 49of386
+Aya Koda, Tree, 13of188
 Sylvia Plath, The Unabridged Journals of Sylvia Plath, 56of732
 Robert Bringhurst, The Elements of Typographic Style, 37of399 
 Ray Bradbury, The Illustrated Man,505of979 
