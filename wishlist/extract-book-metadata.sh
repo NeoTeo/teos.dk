@@ -10,7 +10,8 @@
 #
 # Exit code 0 means the extractor ran end-to-end (MISSING markers are data,
 # not errors). Any non-zero exit code means the extractor could not run at
-# all (claude not found, image unreadable, malformed response, etc.).
+# all (claude not found, image unreadable, malformed response, etc.); exit 77
+# specifically means claude is not authenticated.
 # Diagnostics are written to stderr. A malformed/failed claude response is
 # retried up to MAX_ATTEMPTS times (with a visible notice) before giving up,
 # since such responses are often transient even for a readable image.
@@ -32,6 +33,13 @@ if ! command -v claude >/dev/null 2>&1; then
     echo "extract-book-metadata: claude CLI not found on PATH" >&2
     exit 127
 fi
+
+# Pin the model. The CLI's default model can be one that requires usage credits
+# (e.g. Fable 5), which a Claude Pro subscription does not include — invoking it
+# fails with "requires usage credits" instead of returning metadata. Sonnet is
+# covered by Pro and is more than capable of reading a book cover. Override with
+# EXTRACT_MODEL if you ever want a different one.
+MODEL=${EXTRACT_MODEL:-sonnet}
 
 PROMPT='You are extracting metadata from a book cover image. Output EXACTLY three lines in this format, with no preamble, commentary, or markdown:
 
@@ -138,7 +146,7 @@ img_label=$(basename "$image_path")
 attempt=1
 while :; do
     claude_ok=1
-    raw=$(claude -p "${PROMPT} @${claude_image}" 2>"$claude_err") || claude_ok=0
+    raw=$(claude -p --model "$MODEL" "${PROMPT} @${claude_image}" 2>"$claude_err") || claude_ok=0
 
     if [ "$claude_ok" -eq 1 ]; then
         # validate_response prints the normalized lines on success; capture them
@@ -149,13 +157,34 @@ while :; do
         fi
         fail_reason="malformed response"
     else
+        # claude reports several fatal conditions (notably "Not logged in") on
+        # stdout with an empty stderr, so log both streams or the log ends up
+        # saying only "invocation failed" with no cause.
         {
             echo "extract-book-metadata: claude invocation failed"
+            if [ -n "$raw" ]; then
+                echo "  claude stdout:"
+                printf '%s\n' "$raw" | sed 's/^/    /'
+            fi
             if [ -s "$claude_err" ]; then
                 echo "  claude stderr:"
                 sed 's/^/    /' "$claude_err"
             fi
         } >&2
+
+        # Some failures are not transient — retrying just burns the remaining
+        # attempts against the same wall. Bail out with a pointed message.
+        case "$raw" in
+            *"Not logged in"*|*"Please run /login"*)
+                notify "extract-book-metadata: claude is not authenticated — run 'claude auth login', then retry"
+                exit 77
+                ;;
+            *"requires usage credits"*)
+                notify "extract-book-metadata: model '$MODEL' requires usage credits this account lacks — set EXTRACT_MODEL to a covered model, then retry"
+                exit 77
+                ;;
+        esac
+
         fail_reason="claude invocation failed"
     fi
 
