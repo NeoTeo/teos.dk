@@ -115,6 +115,24 @@ blurb automatically.
 
 Requirements:
 - The `claude` CLI must be on `PATH`.
+- The `claude` CLI must be **logged in**. This is a subscription OAuth
+  login, *not* an `ANTHROPIC_API_KEY` — the API key path bills against
+  separate Console credits. Check with `claude auth status` (want
+  `"loggedIn": true`); log in with `claude auth login` if not. Note the
+  command is `claude auth login`, **not** `claude /login` — `/login` only
+  works inside an interactive session, not from the shell. A logged-out CLI
+  prints `Not logged in · Please run /login` and the extractor exits 77.
+- The pinned model must be covered by your plan. The extractor pins
+  `sonnet` (see `MODEL` in `extract-book-metadata.sh`) precisely because
+  the CLI's *default* model can be one requiring usage credits a Pro
+  subscription does not include — that fails with
+  `Fable 5 requires usage credits` (or similar) and the extractor exits 77.
+  Override with `EXTRACT_MODEL=<model> ./add-images.sh` if needed.
+
+Both of the above are non-transient, so the extractor bails immediately
+(exit 77) with a pointed message instead of retrying. If a run fails, read
+`wishlist/extract.log` first — the extractor logs `claude`'s own stdout
+there, which is where these two conditions are actually reported.
 
 Per-image output:
 - `book-foo.jpg: author=ok, title=ok, blurb=ok` — all three fields filled.
