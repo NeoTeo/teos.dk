@@ -2,3 +2,4 @@ Jimmy Lion:Gizmo holiday socks:clothes-Holiday-Gizmo_Dark-Aqua-Red_1_1500x1500.j
 Gran Sasso:Unknown Model:clothes-2028396_LogoScritta_200.png::"Nice jumpers from Gran Sasso"
 Jimmy Lion:Unknown Model:clothes-Premium-Winter-Cash_Grey-Dark-Grey_1_1500x1500.jpg.webp::
 UNIQLO:Quilted Puffer Vest:clothes-eugoods_69_478270_3x4.avif:"https://www.uniqlo.com/dk/en/products/E478270-000/00?colorDisplayCode=69&sizeDisplayCode=004":"Men's navy quilted puffer vest with high collar and zip front, worn over a sweater and denim shirt."
+UNIQLO:Linen Shirt:clothes-eugoods_69_457428_3x4.avif:"https://www.uniqlo.com/dk/en/products/E457428-000/00?colorDisplayCode=69&sizeDisplayCode=004":"Navy, natural and/or dark brown"
