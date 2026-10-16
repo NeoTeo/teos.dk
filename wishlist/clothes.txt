@@ -4,3 +4,4 @@ Jimmy Lion:Unknown Model:clothes-Premium-Winter-Cash_Grey-Dark-Grey_1_1500x1500.
 UNIQLO:Quilted Puffer Vest:clothes-eugoods_69_478270_3x4.avif:"https://www.uniqlo.com/dk/en/products/E478270-000/00?colorDisplayCode=69&sizeDisplayCode=004":"Men's navy quilted puffer vest with high collar and zip front, worn over a sweater and denim shirt."
 UNIQLO:Linen Shirt:clothes-eugoods_69_457428_3x4.avif:"https://www.uniqlo.com/dk/en/products/E457428-000/00?colorDisplayCode=69&sizeDisplayCode=004":"Navy, natural and/or dark brown"
 UNIQLO:Cardigan:clothes-eugoods_38_450540_3x4.avif:"https://www.uniqlo.com/dk/en/products/E450540-000/00?colorDisplayCode=69&sizeDisplayCode=004":Brown and blue cardigan sweater
+Amundsen:Dunkirk Vest 179 Burnt Red M?:clothes-dropped.avif:"https://amundsen.com/en-DK/dunkirk-vest-mens-burnt-red?size=M":Fair isle patterned vest with a white collar.
