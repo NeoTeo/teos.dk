@@ -5,3 +5,4 @@ UNIQLO:Quilted Puffer Vest:clothes-eugoods_69_478270_3x4.avif:"https://www.uniql
 UNIQLO:Linen Shirt:clothes-eugoods_69_457428_3x4.avif:"https://www.uniqlo.com/dk/en/products/E457428-000/00?colorDisplayCode=69&sizeDisplayCode=004":"Navy, natural and/or dark brown"
 UNIQLO:Cardigan:clothes-eugoods_38_450540_3x4.avif:"https://www.uniqlo.com/dk/en/products/E450540-000/00?colorDisplayCode=69&sizeDisplayCode=004":Brown and blue cardigan sweater
 Amundsen:Dunkirk Vest 179 Burnt Red M?:clothes-dropped.avif:"https://amundsen.com/en-DK/dunkirk-vest-mens-burnt-red?size=M":Fair isle patterned vest with a white collar.
+Amundsen:Heroes Wool Fleece Vest 630 Cowboy M:clothes-v1.avif:"https://amundsen.com/en-DK/winter-down-anorak-mens-snow-white?size=L":Brown sherpa fleece vest with a chest pocket and front zip closure.
