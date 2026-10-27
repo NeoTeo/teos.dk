@@ -119,6 +119,11 @@
   font-display: block;
 }
 
+b,
+strong {
+  font-style: italic;
+}
+
 .no-underline {
   text-decoration: none;
   -webkit-text-decoration: none;
