@@ -1,3 +1,4 @@
+Haruki Murakami, Norwegian Wood, 32of389
 Sylvia Plath, The Unabridged Journals of Sylvia Plath, 56of732
 Robert Bringhurst, The Elements of Typographic Style, 37of399 
 Hugh Aldersley-Williams, Periodic Tales, 155of415
