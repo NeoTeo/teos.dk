@@ -6,7 +6,7 @@
       format("woff");
   font-weight: 400;
   font-style: normal;
-  font-display: optional;
+  font-display: block;
 }
 
 @font-face {
@@ -17,7 +17,7 @@
       format("woff");
   font-weight: 400;
   font-style: italic;
-  font-display: optional;
+  font-display: block;
 }
 
 @font-face {
@@ -28,7 +28,7 @@
       format("woff");
   font-weight: 700;
   font-style: normal;
-  font-display: optional;
+  font-display: block;
 }
 
 @font-face {
@@ -39,7 +39,7 @@
       format("woff");
   font-weight: 700;
   font-style: italic;
-  font-display: optional;
+  font-display: block;
 }
 
 @font-face {
@@ -116,7 +116,7 @@
       format("woff");
   font-weight: 400;
   font-style: normal;
-  font-display: optional;
+  font-display: block;
 }
 
 .no-underline {
