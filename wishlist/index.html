@@ -48,7 +48,7 @@
 		display: inline-block;
 		font-size: 14px;
 		transition: transform 0.2s ease;
-		color: #888;
+		color: var(--text-dim);
 	}
 
 	.section.collapsed .section-toggle {
@@ -122,7 +122,7 @@
 	}
 
 	.placeholder-text {
-		color: #666;
+		color: var(--text-dim);
 		font-style: italic;
 		text-align: center;
 		padding: 40px;
@@ -151,7 +151,7 @@
 	}
 
 	.book-overlay-content {
-		background: white;
+		background: var(--surface);
 		border-radius: 8px;
 		max-width: 500px;
 		width: 90%;
@@ -163,7 +163,7 @@
 
 	.book-overlay-header {
 		padding: 20px 20px 10px;
-		border-bottom: 1px solid #eee;
+		border-bottom: 1px solid var(--surface-border);
 		position: relative;
 	}
 
@@ -175,7 +175,7 @@
 		border: none;
 		font-size: 24px;
 		cursor: pointer;
-		color: #666;
+		color: var(--text-dim);
 		width: 32px;
 		height: 32px;
 		display: flex;
@@ -185,8 +185,8 @@
 	}
 
 	.book-overlay-close:hover {
-		background: #f5f5f5;
-		color: #333;
+		background: var(--hover-bg);
+		color: var(--text);
 	}
 
 	.book-overlay-title {
@@ -198,7 +198,7 @@
 	}
 
 	.book-overlay-author {
-		color: #666;
+		color: var(--text-dim);
 		margin: 0;
 		font-style: italic;
 	}
@@ -210,25 +210,25 @@
 	.book-overlay-note {
 		margin: 0 0 15px 0;
 		line-height: 1.5;
-		color: #333;
+		color: var(--text);
 	}
 
 	.book-overlay-link {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		color: #0066cc;
+		color: var(--accent);
 		text-decoration: none;
 		font-size: 14px;
 		padding: 8px 12px;
-		border: 1px solid #0066cc;
+		border: 1px solid var(--accent);
 		border-radius: 4px;
 		transition: background-color 0.2s ease, color 0.2s ease;
 	}
 
 	.book-overlay-link:hover {
-		background-color: #0066cc;
-		color: white;
+		background-color: var(--accent);
+		color: var(--accent-contrast);
 	}
 
 	.book-overlay-link svg {

@@ -119,6 +119,81 @@
   font-display: block;
 }
 
+/* Theme: follows the operating system's light/dark setting.
+   color-scheme also switches the browser's own chrome (scrollbars, form
+   controls, default canvas) so nothing is left looking light on a dark page. */
+:root {
+  color-scheme: light dark;
+
+  --bg: #ffffff;
+  --text: #000000;
+  --text-dim: #666666;
+  --muted: lightgrey;
+  --link: #0000ee;
+  --link-visited: #551a8b;
+  --rule: #c0c0c0;
+  --border: #dddddd;
+  --surface: #ffffff;
+  --surface-border: #eeeeee;
+  --hover-bg: #f5f5f5;
+  --accent: #0066cc;
+  --accent-contrast: #ffffff;
+  --tooltip-bg: #333333;
+  --tooltip-text: #ffffff;
+  --tooltip-border: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151515;
+    --text: #dad7d2;
+    --text-dim: #a8a39c;
+    --muted: #6b6b6b;
+    --link: #8cb4ff;
+    --link-visited: #c3a5e8;
+    --rule: #3a3a3a;
+    --border: #3a3a3a;
+    --surface: #1e1e22;
+    --surface-border: #333333;
+    --hover-bg: #2a2a2e;
+    --accent: #6ba7f5;
+    --accent-contrast: #10131a;
+    --tooltip-bg: #3a3a40;
+    --tooltip-text: #ecebe8;
+    --tooltip-border: #4d4d55;
+  }
+}
+
+html {
+  background-color: var(--bg);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* The default inset bevel reads as a near-black line on a dark page. */
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* The home glyph is dark ink on transparency. */
+  .home-button img {
+    filter: invert(1);
+  }
+}
+
 b,
 strong {
   font-style: italic;
@@ -144,7 +219,7 @@ ul.custom-list {
     font-style: italic;
 }
 .entry-date {
-  color: lightgrey;
+  color: var(--muted);
   font-family: monospace;
 }
 
