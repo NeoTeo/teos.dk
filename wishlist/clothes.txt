@@ -10,3 +10,4 @@ Massimo Dutti:Funnel Neck Cardigan:clothes-01462226700-o6.webp:"https://www.mass
 Massimo Dutti:Mock Neck Sweater:clothes-01484233401-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":"Navy mock neck sweater paired with dark trousers and black leather shoes for a sleek, minimalist look."
 Massimo Dutti:Knit Collared Cardigan:clothes-01475233706-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":"Textured knit collared cardigan with button front, styled over a brown tee and paired with classic blue jeans."
 Massimo Dutti:Polo Sweater:clothes-01301210507-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":Men's long-sleeve brown knit polo sweater paired with grey trousers for a smart-casual look.
+Massimo Dutti:Shirt (råhvid):clothes-00183014712-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":"Men's relaxed-fit button-down shirt in a soft washed blue denim-like fabric, paired with light beige linen trousers."
