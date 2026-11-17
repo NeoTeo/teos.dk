@@ -8,3 +8,4 @@ Amundsen:Dunkirk Vest 179 Burnt Red M?:clothes-dropped.avif:"https://amundsen.co
 Amundsen:Heroes Wool Fleece Vest 630 Cowboy M:clothes-v1.avif:"https://amundsen.com/en-DK/winter-down-anorak-mens-snow-white?size=L":Brown sherpa fleece vest with a chest pocket and front zip closure.
 Massimo Dutti:Funnel Neck Cardigan:clothes-01462226700-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":"Brown funnel neck knit cardigan with button front, paired with relaxed light-wash denim jeans."
 Massimo Dutti:Mock Neck Sweater:clothes-01484233401-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":"Navy mock neck sweater paired with dark trousers and black leather shoes for a sleek, minimalist look."
+Massimo Dutti:Knit Collared Cardigan:clothes-01475233706-o6.webp:"https://www.massimodutti.com/dk/herre-n1343":"Textured knit collared cardigan with button front, styled over a brown tee and paired with classic blue jeans."
